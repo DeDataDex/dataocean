@@ -1,0 +1,14 @@
+syntax = "proto3";
+package dataocean.dataocean;
+
+import "gogoproto/gogo.proto";
+import "dataocean/dataocean/params.proto";
+// this line is used by starport scaffolding # genesis/proto/import
+
+option go_package = "dataocean/x/dataocean/types";
+
+// GenesisState defines the dataocean module's genesis state.
+message GenesisState {
+  Params params = 1 [(gogoproto.nullable) = false];
+  // this line is used by starport scaffolding # genesis/proto/state
+}
