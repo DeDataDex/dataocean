@@ -1,8 +1,10 @@
 // THIS FILE IS GENERATED AUTOMATICALLY. DO NOT MODIFY.
 
+import DataoceanDataocean from './dataocean.dataocean'
 
 
 export default { 
+  DataoceanDataocean: load(DataoceanDataocean, 'dataocean.dataocean'),
   
 }
 
