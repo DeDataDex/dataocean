@@ -14,6 +14,15 @@ func TestGenesis(t *testing.T) {
 	genesisState := types.GenesisState{
 		Params: types.DefaultParams(),
 
+		VideoList: []types.Video{
+			{
+				Id: 0,
+			},
+			{
+				Id: 1,
+			},
+		},
+		VideoCount: 2,
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -25,5 +34,7 @@ func TestGenesis(t *testing.T) {
 	nullify.Fill(&genesisState)
 	nullify.Fill(got)
 
+	require.ElementsMatch(t, genesisState.VideoList, got.VideoList)
+	require.Equal(t, genesisState.VideoCount, got.VideoCount)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

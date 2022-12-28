@@ -24,7 +24,11 @@ var (
 )
 
 const (
-// this line is used by starport scaffolding # simapp/module/const
+	opWeightMsgCreateVideo = "op_weight_msg_create_video"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgCreateVideo int = 100
+
+	// this line is used by starport scaffolding # simapp/module/const
 )
 
 // GenerateGenesisState creates a randomized GenState of the module
@@ -57,6 +61,17 @@ func (am AppModule) RegisterStoreDecoder(_ sdk.StoreDecoderRegistry) {}
 // WeightedOperations returns the all the gov module operations with their respective weights.
 func (am AppModule) WeightedOperations(simState module.SimulationState) []simtypes.WeightedOperation {
 	operations := make([]simtypes.WeightedOperation, 0)
+
+	var weightMsgCreateVideo int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreateVideo, &weightMsgCreateVideo, nil,
+		func(_ *rand.Rand) {
+			weightMsgCreateVideo = defaultWeightMsgCreateVideo
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgCreateVideo,
+		dataoceansimulation.SimulateMsgCreateVideo(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
 
 	// this line is used by starport scaffolding # simapp/module/operation
 
