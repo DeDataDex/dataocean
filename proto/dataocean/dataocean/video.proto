@@ -1,0 +1,15 @@
+syntax = "proto3";
+package dataocean.dataocean;
+
+option go_package = "dataocean/x/dataocean/types";
+
+message Video {
+  uint64 id = 1;
+  string creator = 2; 
+  string title = 3;
+  string description = 4;
+  string coverLink = 5;
+  string videoLink = 6;
+  uint64 priceMB = 7;
+  uint64 createdAt = 8;
+}

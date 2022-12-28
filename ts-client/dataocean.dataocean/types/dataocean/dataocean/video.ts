@@ -4,135 +4,81 @@ import _m0 from "protobufjs/minimal";
 
 export const protobufPackage = "dataocean.dataocean";
 
-export interface MsgCreateVideo {
+export interface Video {
+  id: number;
   creator: string;
   title: string;
   description: string;
   coverLink: string;
   videoLink: string;
   priceMB: number;
+  createdAt: number;
 }
 
-export interface MsgCreateVideoResponse {
-  id: number;
+function createBaseVideo(): Video {
+  return { id: 0, creator: "", title: "", description: "", coverLink: "", videoLink: "", priceMB: 0, createdAt: 0 };
 }
 
-function createBaseMsgCreateVideo(): MsgCreateVideo {
-  return { creator: "", title: "", description: "", coverLink: "", videoLink: "", priceMB: 0 };
-}
-
-export const MsgCreateVideo = {
-  encode(message: MsgCreateVideo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.creator !== "") {
-      writer.uint32(10).string(message.creator);
-    }
-    if (message.title !== "") {
-      writer.uint32(18).string(message.title);
-    }
-    if (message.description !== "") {
-      writer.uint32(26).string(message.description);
-    }
-    if (message.coverLink !== "") {
-      writer.uint32(34).string(message.coverLink);
-    }
-    if (message.videoLink !== "") {
-      writer.uint32(42).string(message.videoLink);
-    }
-    if (message.priceMB !== 0) {
-      writer.uint32(48).uint64(message.priceMB);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCreateVideo {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMsgCreateVideo();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.creator = reader.string();
-          break;
-        case 2:
-          message.title = reader.string();
-          break;
-        case 3:
-          message.description = reader.string();
-          break;
-        case 4:
-          message.coverLink = reader.string();
-          break;
-        case 5:
-          message.videoLink = reader.string();
-          break;
-        case 6:
-          message.priceMB = longToNumber(reader.uint64() as Long);
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): MsgCreateVideo {
-    return {
-      creator: isSet(object.creator) ? String(object.creator) : "",
-      title: isSet(object.title) ? String(object.title) : "",
-      description: isSet(object.description) ? String(object.description) : "",
-      coverLink: isSet(object.coverLink) ? String(object.coverLink) : "",
-      videoLink: isSet(object.videoLink) ? String(object.videoLink) : "",
-      priceMB: isSet(object.priceMB) ? Number(object.priceMB) : 0,
-    };
-  },
-
-  toJSON(message: MsgCreateVideo): unknown {
-    const obj: any = {};
-    message.creator !== undefined && (obj.creator = message.creator);
-    message.title !== undefined && (obj.title = message.title);
-    message.description !== undefined && (obj.description = message.description);
-    message.coverLink !== undefined && (obj.coverLink = message.coverLink);
-    message.videoLink !== undefined && (obj.videoLink = message.videoLink);
-    message.priceMB !== undefined && (obj.priceMB = Math.round(message.priceMB));
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<MsgCreateVideo>, I>>(object: I): MsgCreateVideo {
-    const message = createBaseMsgCreateVideo();
-    message.creator = object.creator ?? "";
-    message.title = object.title ?? "";
-    message.description = object.description ?? "";
-    message.coverLink = object.coverLink ?? "";
-    message.videoLink = object.videoLink ?? "";
-    message.priceMB = object.priceMB ?? 0;
-    return message;
-  },
-};
-
-function createBaseMsgCreateVideoResponse(): MsgCreateVideoResponse {
-  return { id: 0 };
-}
-
-export const MsgCreateVideoResponse = {
-  encode(message: MsgCreateVideoResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const Video = {
+  encode(message: Video, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.id !== 0) {
       writer.uint32(8).uint64(message.id);
     }
+    if (message.creator !== "") {
+      writer.uint32(18).string(message.creator);
+    }
+    if (message.title !== "") {
+      writer.uint32(26).string(message.title);
+    }
+    if (message.description !== "") {
+      writer.uint32(34).string(message.description);
+    }
+    if (message.coverLink !== "") {
+      writer.uint32(42).string(message.coverLink);
+    }
+    if (message.videoLink !== "") {
+      writer.uint32(50).string(message.videoLink);
+    }
+    if (message.priceMB !== 0) {
+      writer.uint32(56).uint64(message.priceMB);
+    }
+    if (message.createdAt !== 0) {
+      writer.uint32(64).uint64(message.createdAt);
+    }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCreateVideoResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): Video {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMsgCreateVideoResponse();
+    const message = createBaseVideo();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
           message.id = longToNumber(reader.uint64() as Long);
           break;
+        case 2:
+          message.creator = reader.string();
+          break;
+        case 3:
+          message.title = reader.string();
+          break;
+        case 4:
+          message.description = reader.string();
+          break;
+        case 5:
+          message.coverLink = reader.string();
+          break;
+        case 6:
+          message.videoLink = reader.string();
+          break;
+        case 7:
+          message.priceMB = longToNumber(reader.uint64() as Long);
+          break;
+        case 8:
+          message.createdAt = longToNumber(reader.uint64() as Long);
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -141,45 +87,45 @@ export const MsgCreateVideoResponse = {
     return message;
   },
 
-  fromJSON(object: any): MsgCreateVideoResponse {
-    return { id: isSet(object.id) ? Number(object.id) : 0 };
+  fromJSON(object: any): Video {
+    return {
+      id: isSet(object.id) ? Number(object.id) : 0,
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      title: isSet(object.title) ? String(object.title) : "",
+      description: isSet(object.description) ? String(object.description) : "",
+      coverLink: isSet(object.coverLink) ? String(object.coverLink) : "",
+      videoLink: isSet(object.videoLink) ? String(object.videoLink) : "",
+      priceMB: isSet(object.priceMB) ? Number(object.priceMB) : 0,
+      createdAt: isSet(object.createdAt) ? Number(object.createdAt) : 0,
+    };
   },
 
-  toJSON(message: MsgCreateVideoResponse): unknown {
+  toJSON(message: Video): unknown {
     const obj: any = {};
     message.id !== undefined && (obj.id = Math.round(message.id));
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.title !== undefined && (obj.title = message.title);
+    message.description !== undefined && (obj.description = message.description);
+    message.coverLink !== undefined && (obj.coverLink = message.coverLink);
+    message.videoLink !== undefined && (obj.videoLink = message.videoLink);
+    message.priceMB !== undefined && (obj.priceMB = Math.round(message.priceMB));
+    message.createdAt !== undefined && (obj.createdAt = Math.round(message.createdAt));
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<MsgCreateVideoResponse>, I>>(object: I): MsgCreateVideoResponse {
-    const message = createBaseMsgCreateVideoResponse();
+  fromPartial<I extends Exact<DeepPartial<Video>, I>>(object: I): Video {
+    const message = createBaseVideo();
     message.id = object.id ?? 0;
+    message.creator = object.creator ?? "";
+    message.title = object.title ?? "";
+    message.description = object.description ?? "";
+    message.coverLink = object.coverLink ?? "";
+    message.videoLink = object.videoLink ?? "";
+    message.priceMB = object.priceMB ?? 0;
+    message.createdAt = object.createdAt ?? 0;
     return message;
   },
 };
-
-/** Msg defines the Msg service. */
-export interface Msg {
-  /** this line is used by starport scaffolding # proto/tx/rpc */
-  CreateVideo(request: MsgCreateVideo): Promise<MsgCreateVideoResponse>;
-}
-
-export class MsgClientImpl implements Msg {
-  private readonly rpc: Rpc;
-  constructor(rpc: Rpc) {
-    this.rpc = rpc;
-    this.CreateVideo = this.CreateVideo.bind(this);
-  }
-  CreateVideo(request: MsgCreateVideo): Promise<MsgCreateVideoResponse> {
-    const data = MsgCreateVideo.encode(request).finish();
-    const promise = this.rpc.request("dataocean.dataocean.Msg", "CreateVideo", data);
-    return promise.then((data) => MsgCreateVideoResponse.decode(new _m0.Reader(data)));
-  }
-}
-
-interface Rpc {
-  request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;
-}
 
 declare var self: any | undefined;
 declare var window: any | undefined;

@@ -7,7 +7,21 @@ option go_package = "dataocean/x/dataocean/types";
 
 // Msg defines the Msg service.
 service Msg {
-    // this line is used by starport scaffolding # proto/tx/rpc
+      rpc CreateVideo(MsgCreateVideo) returns (MsgCreateVideoResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgCreateVideo {
+  string creator = 1;
+  string title = 2;
+  string description = 3;
+  string coverLink = 4;
+  string videoLink = 5;
+  uint64 priceMB = 6;
+}
+
+message MsgCreateVideoResponse {
+  uint64 id = 1;
 }
 
 // this line is used by starport scaffolding # proto/tx/message

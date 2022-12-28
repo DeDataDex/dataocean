@@ -19,12 +19,47 @@ func TestGenesisState_Validate(t *testing.T) {
 			valid:    true,
 		},
 		{
-			desc:     "valid genesis state",
+			desc: "valid genesis state",
 			genState: &types.GenesisState{
 
+				VideoList: []types.Video{
+					{
+						Id: 0,
+					},
+					{
+						Id: 1,
+					},
+				},
+				VideoCount: 2,
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
+		},
+		{
+			desc: "duplicated video",
+			genState: &types.GenesisState{
+				VideoList: []types.Video{
+					{
+						Id: 0,
+					},
+					{
+						Id: 0,
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "invalid video count",
+			genState: &types.GenesisState{
+				VideoList: []types.Video{
+					{
+						Id: 1,
+					},
+				},
+				VideoCount: 0,
+			},
+			valid: false,
 		},
 		// this line is used by starport scaffolding # types/genesis/testcase
 	} {
