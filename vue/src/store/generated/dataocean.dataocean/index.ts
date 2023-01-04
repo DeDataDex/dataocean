@@ -256,19 +256,6 @@ export default {
 		},
 		
 		
-		async sendMsgCreateVideo({ rootGetters }, { value, fee = [], memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const result = await client.DataoceanDataocean.tx.sendMsgCreateVideo({ value, fee: {amount: fee, gas: "200000"}, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgCreateVideo:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgCreateVideo:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
 		async sendMsgPlayVideo({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
@@ -282,20 +269,20 @@ export default {
 				}
 			}
 		},
-		
-		async MsgCreateVideo({ rootGetters }, { value }) {
+		async sendMsgCreateVideo({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
-				const client=initClient(rootGetters)
-				const msg = await client.DataoceanDataocean.tx.msgCreateVideo({value})
-				return msg
+				const client=await initClient(rootGetters)
+				const result = await client.DataoceanDataocean.tx.sendMsgCreateVideo({ value, fee: {amount: fee, gas: "200000"}, memo })
+				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
 					throw new Error('TxClient:MsgCreateVideo:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgCreateVideo:Create Could not create message: ' + e.message)
+				}else{
+					throw new Error('TxClient:MsgCreateVideo:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
+		
 		async MsgPlayVideo({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
@@ -306,6 +293,19 @@ export default {
 					throw new Error('TxClient:MsgPlayVideo:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:MsgPlayVideo:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgCreateVideo({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.DataoceanDataocean.tx.msgCreateVideo({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgCreateVideo:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgCreateVideo:Create Could not create message: ' + e.message)
 				}
 			}
 		},

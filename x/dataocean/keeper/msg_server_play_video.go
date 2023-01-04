@@ -81,12 +81,7 @@ func (k msgServer) makeVideoLink(creator string, videoId uint64, exp int64) stri
 
 	path := []byte(fmt.Sprintf("addr=%s,video_id=%d,exp=%d", creator, videoId, exp))
 	path = dongle.Encrypt.FromBytes(path).ByAes(cipher).ToBase64Bytes()
+	pathStr := url.PathEscape(string(path))
 
-	serverUrl := url.URL{
-		Scheme: "http",
-		Host:   server.host,
-		Path:   fmt.Sprintf("/%s/%d.m3u8", string(path), videoId),
-	}
-
-	return serverUrl.String()
+	return fmt.Sprintf("http://%s/%s/%d.m3u8", server.host, pathStr, videoId)
 }
