@@ -4,15 +4,12 @@ mock-expected-keepers:
 		-destination=x/dataocean/testutil/expected_keepers_mocks.go 
 
 install-protoc-gen-ts:
+	mkdir -p scripts
+	cd scripts && npm install ts-proto@1.121.6 --save-dev --save-exact
 	mkdir -p scripts/protoc
-	cd scripts 
-	npm install ts-proto@1.121.6 --save-dev --save-exact
-	cd protoc
-	curl -L https://github.com/protocolbuffers/protobuf/releases/download/v21.5/protoc-21.5-linux-x86_64.zip -o protoc.zip
-	unzip protoc.zip
-	rm protoc.zip
-	cd ../..
-	
+	curl -L https://github.com/protocolbuffers/protobuf/releases/download/v21.5/protoc-21.5-linux-x86_64.zip -o scripts/protoc/protoc.zip
+	cd scripts/protoc && unzip -o protoc.zip
+	rm scripts/protoc/protoc.zip
 
 cosmos-version = v0.46.6
 
