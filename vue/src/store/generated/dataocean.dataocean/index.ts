@@ -256,16 +256,16 @@ export default {
 		},
 		
 		
-		async sendMsgPaySign({ rootGetters }, { value, fee = [], memo = '' }) {
+		async sendMsgPlayVideo({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
-				const result = await client.DataoceanDataocean.tx.sendMsgPaySign({ value, fee: {amount: fee, gas: "200000"}, memo })
+				const result = await client.DataoceanDataocean.tx.sendMsgPlayVideo({ value, fee: {amount: fee, gas: "200000"}, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgPaySign:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgPlayVideo:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:MsgPaySign:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:MsgPlayVideo:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -282,59 +282,7 @@ export default {
 				}
 			}
 		},
-		async sendMsgPlayVideo({ rootGetters }, { value, fee = [], memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const result = await client.DataoceanDataocean.tx.sendMsgPlayVideo({ value, fee: {amount: fee, gas: "200000"}, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgPlayVideo:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgPlayVideo:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgSubmitPaySign({ rootGetters }, { value, fee = [], memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const result = await client.DataoceanDataocean.tx.sendMsgSubmitPaySign({ value, fee: {amount: fee, gas: "200000"}, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgSubmitPaySign:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgSubmitPaySign:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
 		
-		async MsgPaySign({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.DataoceanDataocean.tx.msgPaySign({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgPaySign:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgPaySign:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgCreateVideo({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.DataoceanDataocean.tx.msgCreateVideo({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgCreateVideo:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgCreateVideo:Create Could not create message: ' + e.message)
-				}
-			}
-		},
 		async MsgPlayVideo({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
@@ -348,16 +296,16 @@ export default {
 				}
 			}
 		},
-		async MsgSubmitPaySign({ rootGetters }, { value }) {
+		async MsgCreateVideo({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.DataoceanDataocean.tx.msgSubmitPaySign({value})
+				const msg = await client.DataoceanDataocean.tx.msgCreateVideo({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgSubmitPaySign:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgCreateVideo:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:MsgSubmitPaySign:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:MsgCreateVideo:Create Could not create message: ' + e.message)
 				}
 			}
 		},
