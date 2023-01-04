@@ -1,0 +1,12 @@
+syntax = "proto3";
+package dataocean.dataocean;
+
+option go_package = "dataocean/x/dataocean/types";
+
+message VideoLink {
+  string index = 1; 
+  string url = 2; 
+  uint64 exp = 3; 
+  
+}
+

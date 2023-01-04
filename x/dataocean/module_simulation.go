@@ -28,6 +28,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgCreateVideo int = 100
 
+	opWeightMsgPlayVideo = "op_weight_msg_play_video"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgPlayVideo int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -71,6 +75,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgCreateVideo,
 		dataoceansimulation.SimulateMsgCreateVideo(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgPlayVideo int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgPlayVideo, &weightMsgPlayVideo, nil,
+		func(_ *rand.Rand) {
+			weightMsgPlayVideo = defaultWeightMsgPlayVideo
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgPlayVideo,
+		dataoceansimulation.SimulateMsgPlayVideo(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

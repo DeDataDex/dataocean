@@ -2,9 +2,10 @@ import { Client, registry, MissingWalletError } from 'dataocean-client-ts'
 
 import { Params } from "dataocean-client-ts/dataocean.dataocean/types"
 import { Video } from "dataocean-client-ts/dataocean.dataocean/types"
+import { VideoLink } from "dataocean-client-ts/dataocean.dataocean/types"
 
 
-export { Params, Video };
+export { Params, Video, VideoLink };
 
 function initClient(vuexGetters) {
 	return new Client(vuexGetters['common/env/getEnv'], vuexGetters['common/wallet/signer'])
@@ -38,10 +39,13 @@ const getDefaultState = () => {
 				Params: {},
 				Video: {},
 				VideoAll: {},
+				VideoLink: {},
+				VideoLinkAll: {},
 				
 				_Structure: {
 						Params: getStructure(Params.fromPartial({})),
 						Video: getStructure(Video.fromPartial({})),
+						VideoLink: getStructure(VideoLink.fromPartial({})),
 						
 		},
 		_Registry: registry,
@@ -87,6 +91,18 @@ export default {
 						(<any> params).query=null
 					}
 			return state.VideoAll[JSON.stringify(params)] ?? {}
+		},
+				getVideoLink: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.VideoLink[JSON.stringify(params)] ?? {}
+		},
+				getVideoLinkAll: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.VideoLinkAll[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -192,6 +208,54 @@ export default {
 		},
 		
 		
+		
+		
+		 		
+		
+		
+		async QueryVideoLink({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const client = initClient(rootGetters);
+				let value= (await client.DataoceanDataocean.query.queryVideoLink( key.index)).data
+				
+					
+				commit('QUERY', { query: 'VideoLink', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryVideoLink', payload: { options: { all }, params: {...key},query }})
+				return getters['getVideoLink']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryVideoLink API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryVideoLinkAll({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const client = initClient(rootGetters);
+				let value= (await client.DataoceanDataocean.query.queryVideoLinkAll(query ?? undefined)).data
+				
+					
+				while (all && (<any> value).pagination && (<any> value).pagination.next_key!=null) {
+					let next_values=(await client.DataoceanDataocean.query.queryVideoLinkAll({...query ?? {}, 'pagination.key':(<any> value).pagination.next_key} as any)).data
+					value = mergeResults(value, next_values);
+				}
+				commit('QUERY', { query: 'VideoLinkAll', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryVideoLinkAll', payload: { options: { all }, params: {...key},query }})
+				return getters['getVideoLinkAll']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryVideoLinkAll API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
 		async sendMsgCreateVideo({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
@@ -202,6 +266,19 @@ export default {
 					throw new Error('TxClient:MsgCreateVideo:Init Could not initialize signing client. Wallet is required.')
 				}else{
 					throw new Error('TxClient:MsgCreateVideo:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgPlayVideo({ rootGetters }, { value, fee = [], memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const result = await client.DataoceanDataocean.tx.sendMsgPlayVideo({ value, fee: {amount: fee, gas: "200000"}, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgPlayVideo:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgPlayVideo:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -216,6 +293,19 @@ export default {
 					throw new Error('TxClient:MsgCreateVideo:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:MsgCreateVideo:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgPlayVideo({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.DataoceanDataocean.tx.msgPlayVideo({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgPlayVideo:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgPlayVideo:Create Could not create message: ' + e.message)
 				}
 			}
 		},

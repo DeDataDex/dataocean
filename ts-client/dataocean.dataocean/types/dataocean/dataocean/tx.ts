@@ -17,6 +17,16 @@ export interface MsgCreateVideoResponse {
   id: number;
 }
 
+export interface MsgPlayVideo {
+  creator: string;
+  videoId: number;
+}
+
+export interface MsgPlayVideoResponse {
+  url: string;
+  exp: string;
+}
+
 function createBaseMsgCreateVideo(): MsgCreateVideo {
   return { creator: "", title: "", description: "", coverLink: "", videoLink: "", priceMB: 0 };
 }
@@ -158,10 +168,124 @@ export const MsgCreateVideoResponse = {
   },
 };
 
+function createBaseMsgPlayVideo(): MsgPlayVideo {
+  return { creator: "", videoId: 0 };
+}
+
+export const MsgPlayVideo = {
+  encode(message: MsgPlayVideo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.videoId !== 0) {
+      writer.uint32(16).uint64(message.videoId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgPlayVideo {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgPlayVideo();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.videoId = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgPlayVideo {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      videoId: isSet(object.videoId) ? Number(object.videoId) : 0,
+    };
+  },
+
+  toJSON(message: MsgPlayVideo): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.videoId !== undefined && (obj.videoId = Math.round(message.videoId));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgPlayVideo>, I>>(object: I): MsgPlayVideo {
+    const message = createBaseMsgPlayVideo();
+    message.creator = object.creator ?? "";
+    message.videoId = object.videoId ?? 0;
+    return message;
+  },
+};
+
+function createBaseMsgPlayVideoResponse(): MsgPlayVideoResponse {
+  return { url: "", exp: "" };
+}
+
+export const MsgPlayVideoResponse = {
+  encode(message: MsgPlayVideoResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.url !== "") {
+      writer.uint32(10).string(message.url);
+    }
+    if (message.exp !== "") {
+      writer.uint32(18).string(message.exp);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgPlayVideoResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgPlayVideoResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.url = reader.string();
+          break;
+        case 2:
+          message.exp = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgPlayVideoResponse {
+    return { url: isSet(object.url) ? String(object.url) : "", exp: isSet(object.exp) ? String(object.exp) : "" };
+  },
+
+  toJSON(message: MsgPlayVideoResponse): unknown {
+    const obj: any = {};
+    message.url !== undefined && (obj.url = message.url);
+    message.exp !== undefined && (obj.exp = message.exp);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgPlayVideoResponse>, I>>(object: I): MsgPlayVideoResponse {
+    const message = createBaseMsgPlayVideoResponse();
+    message.url = object.url ?? "";
+    message.exp = object.exp ?? "";
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   CreateVideo(request: MsgCreateVideo): Promise<MsgCreateVideoResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  PlayVideo(request: MsgPlayVideo): Promise<MsgPlayVideoResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -169,11 +293,18 @@ export class MsgClientImpl implements Msg {
   constructor(rpc: Rpc) {
     this.rpc = rpc;
     this.CreateVideo = this.CreateVideo.bind(this);
+    this.PlayVideo = this.PlayVideo.bind(this);
   }
   CreateVideo(request: MsgCreateVideo): Promise<MsgCreateVideoResponse> {
     const data = MsgCreateVideo.encode(request).finish();
     const promise = this.rpc.request("dataocean.dataocean.Msg", "CreateVideo", data);
     return promise.then((data) => MsgCreateVideoResponse.decode(new _m0.Reader(data)));
+  }
+
+  PlayVideo(request: MsgPlayVideo): Promise<MsgPlayVideoResponse> {
+    const data = MsgPlayVideo.encode(request).finish();
+    const promise = this.rpc.request("dataocean.dataocean.Msg", "PlayVideo", data);
+    return promise.then((data) => MsgPlayVideoResponse.decode(new _m0.Reader(data)));
   }
 }
 

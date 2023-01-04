@@ -4,6 +4,7 @@ import _m0 from "protobufjs/minimal";
 import { PageRequest, PageResponse } from "../../cosmos/base/query/v1beta1/pagination";
 import { Params } from "./params";
 import { Video } from "./video";
+import { VideoLink } from "./video_link";
 
 export const protobufPackage = "dataocean.dataocean";
 
@@ -31,6 +32,23 @@ export interface QueryAllVideoRequest {
 
 export interface QueryAllVideoResponse {
   Video: Video[];
+  pagination: PageResponse | undefined;
+}
+
+export interface QueryGetVideoLinkRequest {
+  index: string;
+}
+
+export interface QueryGetVideoLinkResponse {
+  videoLink: VideoLink | undefined;
+}
+
+export interface QueryAllVideoLinkRequest {
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryAllVideoLinkResponse {
+  videoLink: VideoLink[];
   pagination: PageResponse | undefined;
 }
 
@@ -331,6 +349,218 @@ export const QueryAllVideoResponse = {
   },
 };
 
+function createBaseQueryGetVideoLinkRequest(): QueryGetVideoLinkRequest {
+  return { index: "" };
+}
+
+export const QueryGetVideoLinkRequest = {
+  encode(message: QueryGetVideoLinkRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.index !== "") {
+      writer.uint32(10).string(message.index);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetVideoLinkRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGetVideoLinkRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.index = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetVideoLinkRequest {
+    return { index: isSet(object.index) ? String(object.index) : "" };
+  },
+
+  toJSON(message: QueryGetVideoLinkRequest): unknown {
+    const obj: any = {};
+    message.index !== undefined && (obj.index = message.index);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGetVideoLinkRequest>, I>>(object: I): QueryGetVideoLinkRequest {
+    const message = createBaseQueryGetVideoLinkRequest();
+    message.index = object.index ?? "";
+    return message;
+  },
+};
+
+function createBaseQueryGetVideoLinkResponse(): QueryGetVideoLinkResponse {
+  return { videoLink: undefined };
+}
+
+export const QueryGetVideoLinkResponse = {
+  encode(message: QueryGetVideoLinkResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.videoLink !== undefined) {
+      VideoLink.encode(message.videoLink, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetVideoLinkResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGetVideoLinkResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.videoLink = VideoLink.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetVideoLinkResponse {
+    return { videoLink: isSet(object.videoLink) ? VideoLink.fromJSON(object.videoLink) : undefined };
+  },
+
+  toJSON(message: QueryGetVideoLinkResponse): unknown {
+    const obj: any = {};
+    message.videoLink !== undefined
+      && (obj.videoLink = message.videoLink ? VideoLink.toJSON(message.videoLink) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGetVideoLinkResponse>, I>>(object: I): QueryGetVideoLinkResponse {
+    const message = createBaseQueryGetVideoLinkResponse();
+    message.videoLink = (object.videoLink !== undefined && object.videoLink !== null)
+      ? VideoLink.fromPartial(object.videoLink)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseQueryAllVideoLinkRequest(): QueryAllVideoLinkRequest {
+  return { pagination: undefined };
+}
+
+export const QueryAllVideoLinkRequest = {
+  encode(message: QueryAllVideoLinkRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllVideoLinkRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryAllVideoLinkRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllVideoLinkRequest {
+    return { pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined };
+  },
+
+  toJSON(message: QueryAllVideoLinkRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined
+      && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryAllVideoLinkRequest>, I>>(object: I): QueryAllVideoLinkRequest {
+    const message = createBaseQueryAllVideoLinkRequest();
+    message.pagination = (object.pagination !== undefined && object.pagination !== null)
+      ? PageRequest.fromPartial(object.pagination)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseQueryAllVideoLinkResponse(): QueryAllVideoLinkResponse {
+  return { videoLink: [], pagination: undefined };
+}
+
+export const QueryAllVideoLinkResponse = {
+  encode(message: QueryAllVideoLinkResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.videoLink) {
+      VideoLink.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(message.pagination, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllVideoLinkResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryAllVideoLinkResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.videoLink.push(VideoLink.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllVideoLinkResponse {
+    return {
+      videoLink: Array.isArray(object?.videoLink) ? object.videoLink.map((e: any) => VideoLink.fromJSON(e)) : [],
+      pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined,
+    };
+  },
+
+  toJSON(message: QueryAllVideoLinkResponse): unknown {
+    const obj: any = {};
+    if (message.videoLink) {
+      obj.videoLink = message.videoLink.map((e) => e ? VideoLink.toJSON(e) : undefined);
+    } else {
+      obj.videoLink = [];
+    }
+    message.pagination !== undefined
+      && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryAllVideoLinkResponse>, I>>(object: I): QueryAllVideoLinkResponse {
+    const message = createBaseQueryAllVideoLinkResponse();
+    message.videoLink = object.videoLink?.map((e) => VideoLink.fromPartial(e)) || [];
+    message.pagination = (object.pagination !== undefined && object.pagination !== null)
+      ? PageResponse.fromPartial(object.pagination)
+      : undefined;
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -339,6 +569,10 @@ export interface Query {
   Video(request: QueryGetVideoRequest): Promise<QueryGetVideoResponse>;
   /** Queries a list of Video items. */
   VideoAll(request: QueryAllVideoRequest): Promise<QueryAllVideoResponse>;
+  /** Queries a VideoLink by index. */
+  VideoLink(request: QueryGetVideoLinkRequest): Promise<QueryGetVideoLinkResponse>;
+  /** Queries a list of VideoLink items. */
+  VideoLinkAll(request: QueryAllVideoLinkRequest): Promise<QueryAllVideoLinkResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -348,6 +582,8 @@ export class QueryClientImpl implements Query {
     this.Params = this.Params.bind(this);
     this.Video = this.Video.bind(this);
     this.VideoAll = this.VideoAll.bind(this);
+    this.VideoLink = this.VideoLink.bind(this);
+    this.VideoLinkAll = this.VideoLinkAll.bind(this);
   }
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
@@ -365,6 +601,18 @@ export class QueryClientImpl implements Query {
     const data = QueryAllVideoRequest.encode(request).finish();
     const promise = this.rpc.request("dataocean.dataocean.Query", "VideoAll", data);
     return promise.then((data) => QueryAllVideoResponse.decode(new _m0.Reader(data)));
+  }
+
+  VideoLink(request: QueryGetVideoLinkRequest): Promise<QueryGetVideoLinkResponse> {
+    const data = QueryGetVideoLinkRequest.encode(request).finish();
+    const promise = this.rpc.request("dataocean.dataocean.Query", "VideoLink", data);
+    return promise.then((data) => QueryGetVideoLinkResponse.decode(new _m0.Reader(data)));
+  }
+
+  VideoLinkAll(request: QueryAllVideoLinkRequest): Promise<QueryAllVideoLinkResponse> {
+    const data = QueryAllVideoLinkRequest.encode(request).finish();
+    const promise = this.rpc.request("dataocean.dataocean.Query", "VideoLinkAll", data);
+    return promise.then((data) => QueryAllVideoLinkResponse.decode(new _m0.Reader(data)));
   }
 }
 

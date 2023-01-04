@@ -3,6 +3,7 @@ import Long from "long";
 import _m0 from "protobufjs/minimal";
 import { Params } from "./params";
 import { Video } from "./video";
+import { VideoLink } from "./video_link";
 
 export const protobufPackage = "dataocean.dataocean";
 
@@ -10,12 +11,13 @@ export const protobufPackage = "dataocean.dataocean";
 export interface GenesisState {
   params: Params | undefined;
   videoList: Video[];
-  /** this line is used by starport scaffolding # genesis/proto/state */
   videoCount: number;
+  /** this line is used by starport scaffolding # genesis/proto/state */
+  videoLinkList: VideoLink[];
 }
 
 function createBaseGenesisState(): GenesisState {
-  return { params: undefined, videoList: [], videoCount: 0 };
+  return { params: undefined, videoList: [], videoCount: 0, videoLinkList: [] };
 }
 
 export const GenesisState = {
@@ -28,6 +30,9 @@ export const GenesisState = {
     }
     if (message.videoCount !== 0) {
       writer.uint32(24).uint64(message.videoCount);
+    }
+    for (const v of message.videoLinkList) {
+      VideoLink.encode(v!, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -48,6 +53,9 @@ export const GenesisState = {
         case 3:
           message.videoCount = longToNumber(reader.uint64() as Long);
           break;
+        case 4:
+          message.videoLinkList.push(VideoLink.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -61,6 +69,9 @@ export const GenesisState = {
       params: isSet(object.params) ? Params.fromJSON(object.params) : undefined,
       videoList: Array.isArray(object?.videoList) ? object.videoList.map((e: any) => Video.fromJSON(e)) : [],
       videoCount: isSet(object.videoCount) ? Number(object.videoCount) : 0,
+      videoLinkList: Array.isArray(object?.videoLinkList)
+        ? object.videoLinkList.map((e: any) => VideoLink.fromJSON(e))
+        : [],
     };
   },
 
@@ -73,6 +84,11 @@ export const GenesisState = {
       obj.videoList = [];
     }
     message.videoCount !== undefined && (obj.videoCount = Math.round(message.videoCount));
+    if (message.videoLinkList) {
+      obj.videoLinkList = message.videoLinkList.map((e) => e ? VideoLink.toJSON(e) : undefined);
+    } else {
+      obj.videoLinkList = [];
+    }
     return obj;
   },
 
@@ -83,6 +99,7 @@ export const GenesisState = {
       : undefined;
     message.videoList = object.videoList?.map((e) => Video.fromPartial(e)) || [];
     message.videoCount = object.videoCount ?? 0;
+    message.videoLinkList = object.videoLinkList?.map((e) => VideoLink.fromPartial(e)) || [];
     return message;
   },
 };

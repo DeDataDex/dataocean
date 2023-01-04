@@ -6,6 +6,7 @@ import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "dataocean/dataocean/params.proto";
 import "dataocean/dataocean/video.proto";
+import "dataocean/dataocean/video_link.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "dataocean/x/dataocean/types";
@@ -24,6 +25,16 @@ service Query {
 	// Queries a list of Video items.
 	rpc VideoAll(QueryAllVideoRequest) returns (QueryAllVideoResponse) {
 		option (google.api.http).get = "/dataocean/dataocean/video";
+	}
+
+// Queries a VideoLink by index.
+	rpc VideoLink(QueryGetVideoLinkRequest) returns (QueryGetVideoLinkResponse) {
+		option (google.api.http).get = "/dataocean/dataocean/video_link/{index}";
+	}
+
+	// Queries a list of VideoLink items.
+	rpc VideoLinkAll(QueryAllVideoLinkRequest) returns (QueryAllVideoLinkResponse) {
+		option (google.api.http).get = "/dataocean/dataocean/video_link";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -52,6 +63,24 @@ message QueryAllVideoRequest {
 
 message QueryAllVideoResponse {
 	repeated Video Video = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetVideoLinkRequest {
+	  string index = 1;
+
+}
+
+message QueryGetVideoLinkResponse {
+	VideoLink videoLink = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllVideoLinkRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllVideoLinkResponse {
+	repeated VideoLink videoLink = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
