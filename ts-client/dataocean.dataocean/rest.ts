@@ -14,10 +14,30 @@ export interface DataoceanMsgCreateVideoResponse {
   id?: string;
 }
 
+export interface DataoceanMsgPlayVideoResponse {
+  url?: string;
+  exp?: string;
+}
+
 /**
  * Params defines the parameters for the module.
  */
 export type DataoceanParams = object;
+
+export interface DataoceanQueryAllVideoLinkResponse {
+  videoLink?: DataoceanVideoLink[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
 
 export interface DataoceanQueryAllVideoResponse {
   Video?: DataoceanVideo[];
@@ -32,6 +52,10 @@ export interface DataoceanQueryAllVideoResponse {
    *  }
    */
   pagination?: V1Beta1PageResponse;
+}
+
+export interface DataoceanQueryGetVideoLinkResponse {
+  videoLink?: DataoceanVideoLink;
 }
 
 export interface DataoceanQueryGetVideoResponse {
@@ -60,6 +84,14 @@ export interface DataoceanVideo {
 
   /** @format uint64 */
   createdAt?: string;
+}
+
+export interface DataoceanVideoLink {
+  index?: string;
+  url?: string;
+
+  /** @format uint64 */
+  exp?: string;
 }
 
 export interface ProtobufAny {
@@ -323,6 +355,48 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryVideo = (id: string, params: RequestParams = {}) =>
     this.request<DataoceanQueryGetVideoResponse, RpcStatus>({
       path: `/dataocean/dataocean/video/${id}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryVideoLinkAll
+   * @summary Queries a list of VideoLink items.
+   * @request GET:/dataocean/dataocean/video_link
+   */
+  queryVideoLinkAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<DataoceanQueryAllVideoLinkResponse, RpcStatus>({
+      path: `/dataocean/dataocean/video_link`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryVideoLink
+   * @summary Queries a VideoLink by index.
+   * @request GET:/dataocean/dataocean/video_link/{index}
+   */
+  queryVideoLink = (index: string, params: RequestParams = {}) =>
+    this.request<DataoceanQueryGetVideoLinkResponse, RpcStatus>({
+      path: `/dataocean/dataocean/video_link/${index}`,
       method: "GET",
       format: "json",
       ...params,

@@ -4,6 +4,7 @@ package dataocean.dataocean;
 import "gogoproto/gogo.proto";
 import "dataocean/dataocean/params.proto";
 import "dataocean/dataocean/video.proto";
+import "dataocean/dataocean/video_link.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "dataocean/x/dataocean/types";
@@ -13,5 +14,6 @@ message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
   repeated Video videoList = 2 [(gogoproto.nullable) = false];
   uint64 videoCount = 3;
+  repeated VideoLink videoLinkList = 4 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }

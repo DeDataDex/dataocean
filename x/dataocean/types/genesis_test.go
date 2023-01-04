@@ -31,6 +31,14 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 				},
 				VideoCount: 2,
+				VideoLinkList: []types.VideoLink{
+					{
+						Index: "0",
+					},
+					{
+						Index: "1",
+					},
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
@@ -58,6 +66,20 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 				},
 				VideoCount: 0,
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated videoLink",
+			genState: &types.GenesisState{
+				VideoLinkList: []types.VideoLink{
+					{
+						Index: "0",
+					},
+					{
+						Index: "0",
+					},
+				},
 			},
 			valid: false,
 		},

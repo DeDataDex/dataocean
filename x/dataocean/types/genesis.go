@@ -10,7 +10,8 @@ const DefaultIndex uint64 = 1
 // DefaultGenesis returns the default genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		VideoList: []Video{},
+		VideoList:     []Video{},
+		VideoLinkList: []VideoLink{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -30,6 +31,16 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("video id should be lower or equal than the last id")
 		}
 		videoIdMap[elem.Id] = true
+	}
+	// Check for duplicated index in videoLink
+	videoLinkIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.VideoLinkList {
+		index := string(VideoLinkKey(elem.Index))
+		if _, ok := videoLinkIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for videoLink")
+		}
+		videoLinkIndexMap[index] = struct{}{}
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

@@ -15,6 +15,10 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 
 	// Set video count
 	k.SetVideoCount(ctx, genState.VideoCount)
+	// Set all the videoLink
+	for _, elem := range genState.VideoLinkList {
+		k.SetVideoLink(ctx, elem)
+	}
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
 }
@@ -26,6 +30,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 
 	genesis.VideoList = k.GetAllVideo(ctx)
 	genesis.VideoCount = k.GetVideoCount(ctx)
+	genesis.VideoLinkList = k.GetAllVideoLink(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

@@ -23,6 +23,14 @@ func TestGenesis(t *testing.T) {
 			},
 		},
 		VideoCount: 2,
+		VideoLinkList: []types.VideoLink{
+			{
+				Index: "0",
+			},
+			{
+				Index: "1",
+			},
+		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -36,5 +44,6 @@ func TestGenesis(t *testing.T) {
 
 	require.ElementsMatch(t, genesisState.VideoList, got.VideoList)
 	require.Equal(t, genesisState.VideoCount, got.VideoCount)
+	require.ElementsMatch(t, genesisState.VideoLinkList, got.VideoLinkList)
 	// this line is used by starport scaffolding # genesis/test/assert
 }
