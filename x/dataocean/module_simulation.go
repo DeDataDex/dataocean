@@ -32,6 +32,14 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgPlayVideo int = 100
 
+	opWeightMsgPaySign = "op_weight_msg_pay_sign"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgPaySign int = 100
+
+	opWeightMsgSubmitPaySign = "op_weight_msg_submit_pay_sign"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgSubmitPaySign int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -86,6 +94,28 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgPlayVideo,
 		dataoceansimulation.SimulateMsgPlayVideo(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgPaySign int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgPaySign, &weightMsgPaySign, nil,
+		func(_ *rand.Rand) {
+			weightMsgPaySign = defaultWeightMsgPaySign
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgPaySign,
+		dataoceansimulation.SimulateMsgPaySign(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgSubmitPaySign int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgSubmitPaySign, &weightMsgSubmitPaySign, nil,
+		func(_ *rand.Rand) {
+			weightMsgSubmitPaySign = defaultWeightMsgSubmitPaySign
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgSubmitPaySign,
+		dataoceansimulation.SimulateMsgSubmitPaySign(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

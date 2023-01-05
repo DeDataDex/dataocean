@@ -14,10 +14,14 @@ export interface DataoceanMsgCreateVideoResponse {
   id?: string;
 }
 
+export type DataoceanMsgPaySignResponse = object;
+
 export interface DataoceanMsgPlayVideoResponse {
   url?: string;
   exp?: string;
 }
+
+export type DataoceanMsgSubmitPaySignResponse = object;
 
 /**
  * Params defines the parameters for the module.

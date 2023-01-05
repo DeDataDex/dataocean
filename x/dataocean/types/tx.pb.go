@@ -259,39 +259,242 @@ func (m *MsgPlayVideoResponse) GetExp() string {
 	return ""
 }
 
+type MsgPaySign struct {
+	Creator        string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	VideoId        uint64 `protobuf:"varint,2,opt,name=videoId,proto3" json:"videoId,omitempty"`
+	ReceivedSizeMB uint64 `protobuf:"varint,3,opt,name=receivedSizeMB,proto3" json:"receivedSizeMB,omitempty"`
+	Timestamp      uint64 `protobuf:"varint,4,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
+}
+
+func (m *MsgPaySign) Reset()         { *m = MsgPaySign{} }
+func (m *MsgPaySign) String() string { return proto.CompactTextString(m) }
+func (*MsgPaySign) ProtoMessage()    {}
+func (*MsgPaySign) Descriptor() ([]byte, []int) {
+	return fileDescriptor_ac0fd1afd5e91081, []int{4}
+}
+func (m *MsgPaySign) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgPaySign) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgPaySign.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgPaySign) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgPaySign.Merge(m, src)
+}
+func (m *MsgPaySign) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgPaySign) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgPaySign.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgPaySign proto.InternalMessageInfo
+
+func (m *MsgPaySign) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgPaySign) GetVideoId() uint64 {
+	if m != nil {
+		return m.VideoId
+	}
+	return 0
+}
+
+func (m *MsgPaySign) GetReceivedSizeMB() uint64 {
+	if m != nil {
+		return m.ReceivedSizeMB
+	}
+	return 0
+}
+
+func (m *MsgPaySign) GetTimestamp() uint64 {
+	if m != nil {
+		return m.Timestamp
+	}
+	return 0
+}
+
+type MsgPaySignResponse struct {
+}
+
+func (m *MsgPaySignResponse) Reset()         { *m = MsgPaySignResponse{} }
+func (m *MsgPaySignResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgPaySignResponse) ProtoMessage()    {}
+func (*MsgPaySignResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_ac0fd1afd5e91081, []int{5}
+}
+func (m *MsgPaySignResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgPaySignResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgPaySignResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgPaySignResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgPaySignResponse.Merge(m, src)
+}
+func (m *MsgPaySignResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgPaySignResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgPaySignResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgPaySignResponse proto.InternalMessageInfo
+
+type MsgSubmitPaySign struct {
+	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	PaySign string `protobuf:"bytes,2,opt,name=paySign,proto3" json:"paySign,omitempty"`
+}
+
+func (m *MsgSubmitPaySign) Reset()         { *m = MsgSubmitPaySign{} }
+func (m *MsgSubmitPaySign) String() string { return proto.CompactTextString(m) }
+func (*MsgSubmitPaySign) ProtoMessage()    {}
+func (*MsgSubmitPaySign) Descriptor() ([]byte, []int) {
+	return fileDescriptor_ac0fd1afd5e91081, []int{6}
+}
+func (m *MsgSubmitPaySign) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgSubmitPaySign) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgSubmitPaySign.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgSubmitPaySign) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgSubmitPaySign.Merge(m, src)
+}
+func (m *MsgSubmitPaySign) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgSubmitPaySign) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgSubmitPaySign.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgSubmitPaySign proto.InternalMessageInfo
+
+func (m *MsgSubmitPaySign) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgSubmitPaySign) GetPaySign() string {
+	if m != nil {
+		return m.PaySign
+	}
+	return ""
+}
+
+type MsgSubmitPaySignResponse struct {
+}
+
+func (m *MsgSubmitPaySignResponse) Reset()         { *m = MsgSubmitPaySignResponse{} }
+func (m *MsgSubmitPaySignResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgSubmitPaySignResponse) ProtoMessage()    {}
+func (*MsgSubmitPaySignResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_ac0fd1afd5e91081, []int{7}
+}
+func (m *MsgSubmitPaySignResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgSubmitPaySignResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgSubmitPaySignResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgSubmitPaySignResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgSubmitPaySignResponse.Merge(m, src)
+}
+func (m *MsgSubmitPaySignResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgSubmitPaySignResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgSubmitPaySignResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgSubmitPaySignResponse proto.InternalMessageInfo
+
 func init() {
 	proto.RegisterType((*MsgCreateVideo)(nil), "dataocean.dataocean.MsgCreateVideo")
 	proto.RegisterType((*MsgCreateVideoResponse)(nil), "dataocean.dataocean.MsgCreateVideoResponse")
 	proto.RegisterType((*MsgPlayVideo)(nil), "dataocean.dataocean.MsgPlayVideo")
 	proto.RegisterType((*MsgPlayVideoResponse)(nil), "dataocean.dataocean.MsgPlayVideoResponse")
+	proto.RegisterType((*MsgPaySign)(nil), "dataocean.dataocean.MsgPaySign")
+	proto.RegisterType((*MsgPaySignResponse)(nil), "dataocean.dataocean.MsgPaySignResponse")
+	proto.RegisterType((*MsgSubmitPaySign)(nil), "dataocean.dataocean.MsgSubmitPaySign")
+	proto.RegisterType((*MsgSubmitPaySignResponse)(nil), "dataocean.dataocean.MsgSubmitPaySignResponse")
 }
 
 func init() { proto.RegisterFile("dataocean/dataocean/tx.proto", fileDescriptor_ac0fd1afd5e91081) }
 
 var fileDescriptor_ac0fd1afd5e91081 = []byte{
-	// 345 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x52, 0x41, 0x4b, 0xf3, 0x40,
-	0x10, 0xed, 0xb6, 0x69, 0x4b, 0xa7, 0x1f, 0xe5, 0x63, 0x2d, 0xb2, 0xd4, 0x12, 0x6a, 0xbc, 0x54,
-	0x84, 0x08, 0x8a, 0x17, 0x8f, 0xf5, 0x24, 0x18, 0x90, 0x1c, 0x04, 0xbd, 0x48, 0x4c, 0x96, 0xb2,
-	0x58, 0xb2, 0x61, 0x77, 0x2d, 0xed, 0xbf, 0xf0, 0xe7, 0x78, 0xf5, 0xe6, 0xb1, 0x47, 0x8f, 0xd2,
-	0xfe, 0x11, 0xd9, 0x6d, 0xb3, 0x49, 0x41, 0xa9, 0xb7, 0x79, 0xef, 0x4d, 0x66, 0xde, 0xdb, 0x0c,
-	0xf4, 0x93, 0x48, 0x45, 0x3c, 0xa6, 0x51, 0x7a, 0x5a, 0x54, 0x6a, 0xe6, 0x67, 0x82, 0x2b, 0x8e,
-	0xf7, 0x2c, 0xe7, 0xdb, 0xca, 0x7b, 0x43, 0xd0, 0x09, 0xe4, 0xf8, 0x4a, 0xd0, 0x48, 0xd1, 0x3b,
-	0x96, 0x50, 0x8e, 0x09, 0x34, 0x63, 0x0d, 0xb9, 0x20, 0x68, 0x80, 0x86, 0xad, 0x30, 0x87, 0xb8,
-	0x0b, 0x75, 0xc5, 0xd4, 0x84, 0x92, 0xaa, 0xe1, 0xd7, 0x00, 0x0f, 0xa0, 0x9d, 0x50, 0x19, 0x0b,
-	0x96, 0x29, 0xc6, 0x53, 0x52, 0x33, 0x5a, 0x99, 0xc2, 0x7d, 0x68, 0xc5, 0x7c, 0x4a, 0xc5, 0x0d,
-	0x4b, 0x9f, 0x89, 0x63, 0xf4, 0x82, 0xd0, 0xea, 0x54, 0x2f, 0x36, 0x6a, 0x7d, 0xad, 0x5a, 0x42,
-	0xbb, 0xc9, 0x04, 0x8b, 0x69, 0x30, 0x22, 0x8d, 0x01, 0x1a, 0x3a, 0x61, 0x0e, 0xbd, 0x21, 0xec,
-	0x6f, 0x3b, 0x0f, 0xa9, 0xcc, 0x78, 0x2a, 0x29, 0xee, 0x40, 0x95, 0x25, 0xc6, 0xbc, 0x13, 0x56,
-	0x59, 0xe2, 0x8d, 0xe0, 0x5f, 0x20, 0xc7, 0xb7, 0x93, 0x68, 0xbe, 0x2b, 0x21, 0x81, 0xa6, 0x59,
-	0x7d, 0x9d, 0x98, 0x8c, 0x4e, 0x98, 0x43, 0xef, 0x12, 0xba, 0xe5, 0x19, 0x76, 0xd7, 0x7f, 0xa8,
-	0xbd, 0x88, 0xc9, 0x66, 0x8e, 0x2e, 0x35, 0x43, 0x67, 0xd9, 0xe6, 0x8d, 0x74, 0x79, 0xf6, 0x8e,
-	0xa0, 0x16, 0xc8, 0x31, 0x7e, 0x84, 0x76, 0xf9, 0xa1, 0x8f, 0xfc, 0x1f, 0xfe, 0x88, 0xbf, 0x9d,
-	0xa9, 0x77, 0xf2, 0x87, 0x26, 0x6b, 0xe6, 0x1e, 0x5a, 0x45, 0xca, 0xc3, 0xdf, 0xbe, 0xb4, 0x2d,
-	0xbd, 0xe3, 0x9d, 0x2d, 0xf9, 0xe8, 0xd1, 0xc5, 0xc7, 0xd2, 0x45, 0x8b, 0xa5, 0x8b, 0xbe, 0x96,
-	0x2e, 0x7a, 0x5d, 0xb9, 0x95, 0xc5, 0xca, 0xad, 0x7c, 0xae, 0xdc, 0xca, 0xc3, 0x41, 0x71, 0x6b,
-	0xb3, 0xf2, 0xdd, 0xcd, 0x33, 0x2a, 0x9f, 0x1a, 0xe6, 0xf6, 0xce, 0xbf, 0x03, 0x00, 0x00, 0xff,
-	0xff, 0x92, 0x77, 0x46, 0x71, 0x9b, 0x02, 0x00, 0x00,
+	// 462 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x54, 0x4f, 0x8b, 0xd3, 0x40,
+	0x14, 0x6f, 0xda, 0xec, 0x96, 0xbe, 0xd5, 0xb2, 0x8c, 0x45, 0x42, 0x5c, 0x62, 0x8d, 0xa8, 0x15,
+	0xb1, 0x82, 0xe2, 0xc5, 0x63, 0x05, 0x41, 0x30, 0x20, 0x29, 0x08, 0x7a, 0x91, 0x6c, 0xf2, 0x08,
+	0x83, 0x6d, 0x32, 0xcc, 0xcc, 0x96, 0xd6, 0x0f, 0xe0, 0xd9, 0x8f, 0xe3, 0x47, 0xf0, 0xb8, 0x47,
+	0x8f, 0xd2, 0x7e, 0x0e, 0x41, 0x66, 0xda, 0x99, 0x34, 0xc5, 0xd2, 0xe2, 0xed, 0xbd, 0xdf, 0xfb,
+	0xbd, 0x7f, 0xbf, 0x19, 0x1e, 0x5c, 0x64, 0x89, 0x4c, 0xca, 0x14, 0x93, 0xe2, 0x59, 0x65, 0xc9,
+	0xf9, 0x90, 0xf1, 0x52, 0x96, 0xe4, 0x96, 0xc5, 0x86, 0xd6, 0x0a, 0x7f, 0x38, 0xd0, 0x8d, 0x44,
+	0xfe, 0x9a, 0x63, 0x22, 0xf1, 0x03, 0xcd, 0xb0, 0x24, 0x1e, 0xb4, 0x53, 0xe5, 0x96, 0xdc, 0x73,
+	0xfa, 0xce, 0xa0, 0x13, 0x1b, 0x97, 0xf4, 0xe0, 0x44, 0x52, 0x39, 0x41, 0xaf, 0xa9, 0xf1, 0xb5,
+	0x43, 0xfa, 0x70, 0x96, 0xa1, 0x48, 0x39, 0x65, 0x92, 0x96, 0x85, 0xd7, 0xd2, 0xb1, 0x6d, 0x88,
+	0x5c, 0x40, 0x27, 0x2d, 0x67, 0xc8, 0xdf, 0xd1, 0xe2, 0x8b, 0xe7, 0xea, 0x78, 0x05, 0xa8, 0xe8,
+	0x4c, 0x35, 0xd6, 0xd1, 0x93, 0x75, 0xd4, 0x02, 0x6a, 0x1a, 0xc6, 0x69, 0x8a, 0xd1, 0xc8, 0x3b,
+	0xed, 0x3b, 0x03, 0x37, 0x36, 0x6e, 0x38, 0x80, 0xdb, 0xf5, 0xc9, 0x63, 0x14, 0xac, 0x2c, 0x04,
+	0x92, 0x2e, 0x34, 0x69, 0xa6, 0x87, 0x77, 0xe3, 0x26, 0xcd, 0xc2, 0x11, 0xdc, 0x88, 0x44, 0xfe,
+	0x7e, 0x92, 0x2c, 0x0e, 0x6d, 0xe8, 0x41, 0x5b, 0xb7, 0x7e, 0x9b, 0xe9, 0x1d, 0xdd, 0xd8, 0xb8,
+	0xe1, 0x2b, 0xe8, 0x6d, 0xd7, 0xb0, 0xbd, 0xce, 0xa1, 0x75, 0xc5, 0x27, 0x9b, 0x3a, 0xca, 0x54,
+	0x08, 0xce, 0xd9, 0x46, 0x23, 0x65, 0x86, 0xdf, 0x1c, 0x00, 0x95, 0x9c, 0x2c, 0xc6, 0x34, 0x2f,
+	0xfe, 0xa7, 0x3d, 0x79, 0x08, 0x5d, 0x8e, 0x29, 0xd2, 0x19, 0x66, 0x63, 0xfa, 0x55, 0xa9, 0xd1,
+	0xd2, 0x84, 0x1d, 0x54, 0x89, 0x29, 0xe9, 0x14, 0x85, 0x4c, 0xa6, 0x4c, 0x4b, 0xed, 0xc6, 0x15,
+	0x10, 0xf6, 0x80, 0x54, 0x73, 0x98, 0x15, 0xc2, 0x37, 0x70, 0x1e, 0x89, 0x7c, 0x7c, 0x75, 0x39,
+	0xa5, 0xf2, 0xa8, 0x19, 0xd9, 0x9a, 0xb4, 0x59, 0xd1, 0xb8, 0xa1, 0x0f, 0xde, 0x6e, 0x1d, 0xd3,
+	0xe3, 0xf9, 0x9f, 0x26, 0xb4, 0x22, 0x91, 0x93, 0xcf, 0x70, 0xb6, 0xfd, 0xd7, 0xee, 0x0f, 0xff,
+	0xf1, 0x29, 0x87, 0xf5, 0x67, 0xf5, 0x9f, 0x1c, 0x41, 0xb2, 0xef, 0xf1, 0x11, 0x3a, 0xd5, 0x43,
+	0xdf, 0xdb, 0x97, 0x69, 0x29, 0xfe, 0xe3, 0x83, 0x14, 0x5b, 0x7a, 0x0c, 0x6d, 0x23, 0xcf, 0xdd,
+	0xbd, 0x59, 0x6b, 0x82, 0xff, 0xe8, 0x00, 0xc1, 0x16, 0x45, 0xb8, 0x59, 0x57, 0xfe, 0xc1, 0xbe,
+	0xcc, 0x1a, 0xcd, 0x7f, 0x7a, 0x14, 0xcd, 0xb4, 0x19, 0xbd, 0xfc, 0xb9, 0x0c, 0x9c, 0xeb, 0x65,
+	0xe0, 0xfc, 0x5e, 0x06, 0xce, 0xf7, 0x55, 0xd0, 0xb8, 0x5e, 0x05, 0x8d, 0x5f, 0xab, 0xa0, 0xf1,
+	0xe9, 0x4e, 0x75, 0x2a, 0xe6, 0xdb, 0x67, 0x63, 0xc1, 0x50, 0x5c, 0x9e, 0xea, 0xd3, 0xf1, 0xe2,
+	0x6f, 0x00, 0x00, 0x00, 0xff, 0xff, 0x3c, 0xf1, 0xdc, 0x2c, 0x5a, 0x04, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -308,6 +511,8 @@ const _ = grpc.SupportPackageIsVersion4
 type MsgClient interface {
 	CreateVideo(ctx context.Context, in *MsgCreateVideo, opts ...grpc.CallOption) (*MsgCreateVideoResponse, error)
 	PlayVideo(ctx context.Context, in *MsgPlayVideo, opts ...grpc.CallOption) (*MsgPlayVideoResponse, error)
+	PaySign(ctx context.Context, in *MsgPaySign, opts ...grpc.CallOption) (*MsgPaySignResponse, error)
+	SubmitPaySign(ctx context.Context, in *MsgSubmitPaySign, opts ...grpc.CallOption) (*MsgSubmitPaySignResponse, error)
 }
 
 type msgClient struct {
@@ -336,10 +541,30 @@ func (c *msgClient) PlayVideo(ctx context.Context, in *MsgPlayVideo, opts ...grp
 	return out, nil
 }
 
+func (c *msgClient) PaySign(ctx context.Context, in *MsgPaySign, opts ...grpc.CallOption) (*MsgPaySignResponse, error) {
+	out := new(MsgPaySignResponse)
+	err := c.cc.Invoke(ctx, "/dataocean.dataocean.Msg/PaySign", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) SubmitPaySign(ctx context.Context, in *MsgSubmitPaySign, opts ...grpc.CallOption) (*MsgSubmitPaySignResponse, error) {
+	out := new(MsgSubmitPaySignResponse)
+	err := c.cc.Invoke(ctx, "/dataocean.dataocean.Msg/SubmitPaySign", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
 	CreateVideo(context.Context, *MsgCreateVideo) (*MsgCreateVideoResponse, error)
 	PlayVideo(context.Context, *MsgPlayVideo) (*MsgPlayVideoResponse, error)
+	PaySign(context.Context, *MsgPaySign) (*MsgPaySignResponse, error)
+	SubmitPaySign(context.Context, *MsgSubmitPaySign) (*MsgSubmitPaySignResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
@@ -351,6 +576,12 @@ func (*UnimplementedMsgServer) CreateVideo(ctx context.Context, req *MsgCreateVi
 }
 func (*UnimplementedMsgServer) PlayVideo(ctx context.Context, req *MsgPlayVideo) (*MsgPlayVideoResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PlayVideo not implemented")
+}
+func (*UnimplementedMsgServer) PaySign(ctx context.Context, req *MsgPaySign) (*MsgPaySignResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PaySign not implemented")
+}
+func (*UnimplementedMsgServer) SubmitPaySign(ctx context.Context, req *MsgSubmitPaySign) (*MsgSubmitPaySignResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubmitPaySign not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
@@ -393,6 +624,42 @@ func _Msg_PlayVideo_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_PaySign_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgPaySign)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).PaySign(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/dataocean.dataocean.Msg/PaySign",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).PaySign(ctx, req.(*MsgPaySign))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_SubmitPaySign_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgSubmitPaySign)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).SubmitPaySign(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/dataocean.dataocean.Msg/SubmitPaySign",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).SubmitPaySign(ctx, req.(*MsgSubmitPaySign))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Msg_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "dataocean.dataocean.Msg",
 	HandlerType: (*MsgServer)(nil),
@@ -404,6 +671,14 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "PlayVideo",
 			Handler:    _Msg_PlayVideo_Handler,
+		},
+		{
+			MethodName: "PaySign",
+			Handler:    _Msg_PaySign_Handler,
+		},
+		{
+			MethodName: "SubmitPaySign",
+			Handler:    _Msg_SubmitPaySign_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -573,6 +848,134 @@ func (m *MsgPlayVideoResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *MsgPaySign) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgPaySign) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgPaySign) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Timestamp != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.Timestamp))
+		i--
+		dAtA[i] = 0x20
+	}
+	if m.ReceivedSizeMB != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.ReceivedSizeMB))
+		i--
+		dAtA[i] = 0x18
+	}
+	if m.VideoId != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.VideoId))
+		i--
+		dAtA[i] = 0x10
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgPaySignResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgPaySignResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgPaySignResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgSubmitPaySign) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgSubmitPaySign) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgSubmitPaySign) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.PaySign) > 0 {
+		i -= len(m.PaySign)
+		copy(dAtA[i:], m.PaySign)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.PaySign)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgSubmitPaySignResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgSubmitPaySignResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgSubmitPaySignResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	offset -= sovTx(v)
 	base := offset
@@ -658,6 +1061,63 @@ func (m *MsgPlayVideoResponse) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
+	return n
+}
+
+func (m *MsgPaySign) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	if m.VideoId != 0 {
+		n += 1 + sovTx(uint64(m.VideoId))
+	}
+	if m.ReceivedSizeMB != 0 {
+		n += 1 + sovTx(uint64(m.ReceivedSizeMB))
+	}
+	if m.Timestamp != 0 {
+		n += 1 + sovTx(uint64(m.Timestamp))
+	}
+	return n
+}
+
+func (m *MsgPaySignResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgSubmitPaySign) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.PaySign)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func (m *MsgSubmitPaySignResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
 	return n
 }
 
@@ -1159,6 +1619,359 @@ func (m *MsgPlayVideoResponse) Unmarshal(dAtA []byte) error {
 			}
 			m.Exp = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgPaySign) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgPaySign: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgPaySign: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field VideoId", wireType)
+			}
+			m.VideoId = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.VideoId |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ReceivedSizeMB", wireType)
+			}
+			m.ReceivedSizeMB = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.ReceivedSizeMB |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 4:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Timestamp", wireType)
+			}
+			m.Timestamp = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Timestamp |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgPaySignResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgPaySignResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgPaySignResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgSubmitPaySign) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgSubmitPaySign: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgSubmitPaySign: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PaySign", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.PaySign = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgSubmitPaySignResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgSubmitPaySignResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgSubmitPaySignResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
 		default:
 			iNdEx = preIndex
 			skippy, err := skipTx(dAtA[iNdEx:])

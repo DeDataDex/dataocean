@@ -10,6 +10,8 @@ import (
 func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgCreateVideo{}, "dataocean/CreateVideo", nil)
 	cdc.RegisterConcrete(&MsgPlayVideo{}, "dataocean/PlayVideo", nil)
+	cdc.RegisterConcrete(&MsgPaySign{}, "dataocean/PaySign", nil)
+	cdc.RegisterConcrete(&MsgSubmitPaySign{}, "dataocean/SubmitPaySign", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -19,6 +21,12 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgPlayVideo{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgPaySign{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgSubmitPaySign{},
 	)
 	// this line is used by starport scaffolding # 3
 

@@ -9,6 +9,8 @@ option go_package = "dataocean/x/dataocean/types";
 service Msg {
       rpc CreateVideo(MsgCreateVideo) returns (MsgCreateVideoResponse);
   rpc PlayVideo(MsgPlayVideo) returns (MsgPlayVideoResponse);
+  rpc PaySign(MsgPaySign) returns (MsgPaySignResponse);
+  rpc SubmitPaySign(MsgSubmitPaySign) returns (MsgSubmitPaySignResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -33,6 +35,24 @@ message MsgPlayVideo {
 message MsgPlayVideoResponse {
   string url = 1;
   string exp = 2;
+}
+
+message MsgPaySign {
+  string creator = 1;
+  uint64 videoId = 2;
+  uint64 receivedSizeMB = 3;
+  uint64 timestamp = 4;
+}
+
+message MsgPaySignResponse {
+}
+
+message MsgSubmitPaySign {
+  string creator = 1;
+  string paySign = 2;
+}
+
+message MsgSubmitPaySignResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

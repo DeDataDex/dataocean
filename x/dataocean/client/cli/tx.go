@@ -32,6 +32,8 @@ func GetTxCmd() *cobra.Command {
 
 	cmd.AddCommand(CmdCreateVideo())
 	cmd.AddCommand(CmdPlayVideo())
+	cmd.AddCommand(CmdPaySign())
+	cmd.AddCommand(CmdSubmitPaySign())
 	// this line is used by starport scaffolding # 1
 
 	return cmd
