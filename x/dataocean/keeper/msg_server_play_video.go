@@ -48,6 +48,9 @@ func (k msgServer) PlayVideo(goCtx context.Context, msg *types.MsgPlayVideo) (*t
 	userAddr, _ := sdk.AccAddressFromBech32(msg.Creator)
 
 	auth, exp := k.authzKeeper.GetAuthorization(ctx, moduleAddr, userAddr, sdk.MsgTypeURL(&banktypes.MsgSend{}))
+	if auth == nil {
+		return nil, fmt.Errorf("authorization not exists")
+	}
 	sendAuth := auth.(*banktypes.SendAuthorization)
 	if exp != nil && (*exp).Before(ctx.BlockTime().Add(minAmount)) {
 		return nil, fmt.Errorf("authorization valid time cannot be less than %.0f hours", minValidTime.Hours())
@@ -60,11 +63,14 @@ func (k msgServer) PlayVideo(goCtx context.Context, msg *types.MsgPlayVideo) (*t
 	expTimestamp := time.Now().Add(videoLinkValidTime).Unix()
 	link := k.makeVideoLink(msg.Creator, msg.VideoId, expTimestamp)
 
-	k.SetVideoLink(ctx, types.VideoLink{
+	videoLink := types.VideoLink{
 		Index: fmt.Sprintf("%s-%d", msg.Creator, msg.VideoId),
 		Url:   link,
 		Exp:   uint64(expTimestamp),
-	})
+	}
+	k.SetVideoLink(ctx, videoLink)
+
+	ctx.EventManager().EmitEvent(sdk.NewEvent(types.TypeMsgPlayVideo, sdk.NewAttribute("url", videoLink.Url)))
 
 	return &types.MsgPlayVideoResponse{
 		Url: link,

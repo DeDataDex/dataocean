@@ -8,13 +8,21 @@ import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
 import { MsgCreateVideo } from "./types/dataocean/dataocean/tx";
+import { MsgSubmitPaySign } from "./types/dataocean/dataocean/tx";
 import { MsgPlayVideo } from "./types/dataocean/dataocean/tx";
+import { MsgPaySign } from "./types/dataocean/dataocean/tx";
 
 
-export { MsgCreateVideo, MsgPlayVideo };
+export { MsgCreateVideo, MsgSubmitPaySign, MsgPlayVideo, MsgPaySign };
 
 type sendMsgCreateVideoParams = {
   value: MsgCreateVideo,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgSubmitPaySignParams = {
+  value: MsgSubmitPaySign,
   fee?: StdFee,
   memo?: string
 };
@@ -25,13 +33,27 @@ type sendMsgPlayVideoParams = {
   memo?: string
 };
 
+type sendMsgPaySignParams = {
+  value: MsgPaySign,
+  fee?: StdFee,
+  memo?: string
+};
+
 
 type msgCreateVideoParams = {
   value: MsgCreateVideo,
 };
 
+type msgSubmitPaySignParams = {
+  value: MsgSubmitPaySign,
+};
+
 type msgPlayVideoParams = {
   value: MsgPlayVideo,
+};
+
+type msgPaySignParams = {
+  value: MsgPaySign,
 };
 
 
@@ -66,6 +88,20 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
+		async sendMsgSubmitPaySign({ value, fee, memo }: sendMsgSubmitPaySignParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgSubmitPaySign: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgSubmitPaySign({ value: MsgSubmitPaySign.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgSubmitPaySign: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
 		async sendMsgPlayVideo({ value, fee, memo }: sendMsgPlayVideoParams): Promise<DeliverTxResponse> {
 			if (!signer) {
 					throw new Error('TxClient:sendMsgPlayVideo: Unable to sign Tx. Signer is not present.')
@@ -80,6 +116,20 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
+		async sendMsgPaySign({ value, fee, memo }: sendMsgPaySignParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgPaySign: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgPaySign({ value: MsgPaySign.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgPaySign: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
 		
 		msgCreateVideo({ value }: msgCreateVideoParams): EncodeObject {
 			try {
@@ -89,11 +139,27 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
+		msgSubmitPaySign({ value }: msgSubmitPaySignParams): EncodeObject {
+			try {
+				return { typeUrl: "/dataocean.dataocean.MsgSubmitPaySign", value: MsgSubmitPaySign.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgSubmitPaySign: Could not create message: ' + e.message)
+			}
+		},
+		
 		msgPlayVideo({ value }: msgPlayVideoParams): EncodeObject {
 			try {
 				return { typeUrl: "/dataocean.dataocean.MsgPlayVideo", value: MsgPlayVideo.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:MsgPlayVideo: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgPaySign({ value }: msgPaySignParams): EncodeObject {
+			try {
+				return { typeUrl: "/dataocean.dataocean.MsgPaySign", value: MsgPaySign.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgPaySign: Could not create message: ' + e.message)
 			}
 		},
 		
