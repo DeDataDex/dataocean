@@ -15,9 +15,9 @@ var _ = strconv.Itoa(0)
 
 func CmdPaySign() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "pay-sign [video-id] [received-size-mb] [timestamp]",
+		Use:   "pay-sign [video-id] [pay-public-key]",
 		Short: "Broadcast message pay-sign",
-		Args:  cobra.ExactArgs(3),
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argVideoId, err := cast.ToUint64E(args[0])
 			if err != nil {
