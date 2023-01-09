@@ -105,7 +105,8 @@ func (k msgServer) exchangePaySign(ctx sdk.Context, submitAddr string, paySign *
 	if !found {
 		return sdkerrors.ErrKeyNotFound
 	}
-	allAmount := int64(video.PriceMB * paySign.ReceivedSizeMB)
+	allAmount := int64(video.PriceMB * 0) // TODO
+	// allAmount := int64(video.PriceMB * paySign.ReceivedSizeMB)
 	cpAmount := allAmount * contentProducerPercent / 100
 
 	moduleAddr := k.accountKeeper.GetModuleAddress(types.ModuleName)

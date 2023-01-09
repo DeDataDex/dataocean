@@ -2,13 +2,16 @@ package keeper
 
 import (
 	"context"
+	crand "crypto/rand"
+	"crypto/rsa"
+	"crypto/x509"
+	"encoding/pem"
 	"fmt"
 	"math/rand"
 	"net/url"
 	"time"
 
 	"dataocean/x/dataocean/types"
-
 	"github.com/golang-module/dongle"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -63,6 +66,11 @@ func (k msgServer) PlayVideo(goCtx context.Context, msg *types.MsgPlayVideo) (*t
 	expTimestamp := time.Now().Add(videoLinkValidTime).Unix()
 	link := k.makeVideoLink(msg.Creator, msg.VideoId, expTimestamp)
 
+	privateKey, publicKey, err := k.genRsaKey()
+	if err != nil {
+		return nil, fmt.Errorf("failed to generate rsa key: %s", err.Error())
+	}
+
 	videoLink := types.VideoLink{
 		Index: fmt.Sprintf("%s-%d", msg.Creator, msg.VideoId),
 		Url:   link,
@@ -70,10 +78,17 @@ func (k msgServer) PlayVideo(goCtx context.Context, msg *types.MsgPlayVideo) (*t
 	}
 	k.SetVideoLink(ctx, videoLink)
 
-	ctx.EventManager().EmitEvent(sdk.NewEvent(types.TypeMsgPlayVideo, sdk.NewAttribute("url", videoLink.Url)))
+	ctx.EventManager().EmitEvents(sdk.Events{
+		sdk.NewEvent(types.TypeMsgPlayVideo, sdk.NewAttribute("url", videoLink.Url)),
+		sdk.NewEvent(types.TypeMsgPlayVideo, sdk.NewAttribute("payPrivateKey", privateKey)),
+		sdk.NewEvent(types.TypeMsgPlayVideo, sdk.NewAttribute("payPublicKey", publicKey)),
+	})
 
 	return &types.MsgPlayVideoResponse{
-		Url: link,
+		Url:           link,
+		Exp:           uint64(expTimestamp),
+		PayPrivateKey: privateKey,
+		PayPublicKey:  publicKey,
 	}, nil
 }
 
@@ -90,4 +105,25 @@ func (k msgServer) makeVideoLink(creator string, videoId uint64, exp int64) stri
 	pathStr := url.PathEscape(string(path))
 
 	return fmt.Sprintf("http://%s/%s/%d.m3u8", server.host, pathStr, videoId)
+}
+
+func (k msgServer) genRsaKey() (string, string, error) {
+	privateKey, err := rsa.GenerateKey(crand.Reader, 1024)
+	if err != nil {
+		return "", "", err
+	}
+	publicKey := &privateKey.PublicKey
+
+	privateBlock := &pem.Block{
+		Type:  "RSA PRIVATE KEY",
+		Bytes: x509.MarshalPKCS1PrivateKey(privateKey),
+	}
+	publicBlock := &pem.Block{
+		Type:  "RSA PUBLIC KEY",
+		Bytes: x509.MarshalPKCS1PublicKey(publicKey),
+	}
+
+	privateKeyStr := string(pem.EncodeToMemory(privateBlock))
+	publicKeyStr := string(pem.EncodeToMemory(publicBlock))
+	return privateKeyStr, publicKeyStr, nil
 }

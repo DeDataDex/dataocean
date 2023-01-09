@@ -34,14 +34,15 @@ message MsgPlayVideo {
 
 message MsgPlayVideoResponse {
   string url = 1;
-  string exp = 2;
+  uint64 exp = 2;
+  string payPublicKey = 3;
+  string payPrivateKey = 4;
 }
 
 message MsgPaySign {
   string creator = 1;
   uint64 videoId = 2;
-  uint64 receivedSizeMB = 3;
-  uint64 timestamp = 4;
+  string payPublicKey = 3;
 }
 
 message MsgPaySignResponse {
@@ -50,6 +51,7 @@ message MsgPaySignResponse {
 message MsgSubmitPaySign {
   string creator = 1;
   string paySign = 2;
+  string payData = 3;
 }
 
 message MsgSubmitPaySignResponse {

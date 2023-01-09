@@ -23,14 +23,7 @@ func CmdPaySign() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			argReceivedSizeMB, err := cast.ToUint64E(args[1])
-			if err != nil {
-				return err
-			}
-			argTimestamp, err := cast.ToUint64E(args[2])
-			if err != nil {
-				return err
-			}
+			argPayPublicKey := args[1]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -40,8 +33,7 @@ func CmdPaySign() *cobra.Command {
 			msg := types.NewMsgPaySign(
 				clientCtx.GetFromAddress().String(),
 				argVideoId,
-				argReceivedSizeMB,
-				argTimestamp,
+				argPayPublicKey,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

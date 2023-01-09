@@ -70118,6 +70118,8 @@ definitions:
       id:
         type: string
         format: uint64
+  dataocean.dataocean.MsgPaySignResponse:
+    type: object
   dataocean.dataocean.MsgPlayVideoResponse:
     type: object
     properties:
@@ -70125,6 +70127,13 @@ definitions:
         type: string
       exp:
         type: string
+        format: uint64
+      payPublicKey:
+        type: string
+      payPrivateKey:
+        type: string
+  dataocean.dataocean.MsgSubmitPaySignResponse:
+    type: object
   dataocean.dataocean.Params:
     type: object
     description: Params defines the parameters for the module.

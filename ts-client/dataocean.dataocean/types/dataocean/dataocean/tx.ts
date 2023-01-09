@@ -24,14 +24,15 @@ export interface MsgPlayVideo {
 
 export interface MsgPlayVideoResponse {
   url: string;
-  exp: string;
+  exp: number;
+  payPublicKey: string;
+  payPrivateKey: string;
 }
 
 export interface MsgPaySign {
   creator: string;
   videoId: number;
-  receivedSizeMB: number;
-  timestamp: number;
+  payPublicKey: string;
 }
 
 export interface MsgPaySignResponse {
@@ -40,6 +41,7 @@ export interface MsgPaySignResponse {
 export interface MsgSubmitPaySign {
   creator: string;
   paySign: string;
+  payData: string;
 }
 
 export interface MsgSubmitPaySignResponse {
@@ -245,7 +247,7 @@ export const MsgPlayVideo = {
 };
 
 function createBaseMsgPlayVideoResponse(): MsgPlayVideoResponse {
-  return { url: "", exp: "" };
+  return { url: "", exp: 0, payPublicKey: "", payPrivateKey: "" };
 }
 
 export const MsgPlayVideoResponse = {
@@ -253,8 +255,14 @@ export const MsgPlayVideoResponse = {
     if (message.url !== "") {
       writer.uint32(10).string(message.url);
     }
-    if (message.exp !== "") {
-      writer.uint32(18).string(message.exp);
+    if (message.exp !== 0) {
+      writer.uint32(16).uint64(message.exp);
+    }
+    if (message.payPublicKey !== "") {
+      writer.uint32(26).string(message.payPublicKey);
+    }
+    if (message.payPrivateKey !== "") {
+      writer.uint32(34).string(message.payPrivateKey);
     }
     return writer;
   },
@@ -270,7 +278,13 @@ export const MsgPlayVideoResponse = {
           message.url = reader.string();
           break;
         case 2:
-          message.exp = reader.string();
+          message.exp = longToNumber(reader.uint64() as Long);
+          break;
+        case 3:
+          message.payPublicKey = reader.string();
+          break;
+        case 4:
+          message.payPrivateKey = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -281,26 +295,35 @@ export const MsgPlayVideoResponse = {
   },
 
   fromJSON(object: any): MsgPlayVideoResponse {
-    return { url: isSet(object.url) ? String(object.url) : "", exp: isSet(object.exp) ? String(object.exp) : "" };
+    return {
+      url: isSet(object.url) ? String(object.url) : "",
+      exp: isSet(object.exp) ? Number(object.exp) : 0,
+      payPublicKey: isSet(object.payPublicKey) ? String(object.payPublicKey) : "",
+      payPrivateKey: isSet(object.payPrivateKey) ? String(object.payPrivateKey) : "",
+    };
   },
 
   toJSON(message: MsgPlayVideoResponse): unknown {
     const obj: any = {};
     message.url !== undefined && (obj.url = message.url);
-    message.exp !== undefined && (obj.exp = message.exp);
+    message.exp !== undefined && (obj.exp = Math.round(message.exp));
+    message.payPublicKey !== undefined && (obj.payPublicKey = message.payPublicKey);
+    message.payPrivateKey !== undefined && (obj.payPrivateKey = message.payPrivateKey);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<MsgPlayVideoResponse>, I>>(object: I): MsgPlayVideoResponse {
     const message = createBaseMsgPlayVideoResponse();
     message.url = object.url ?? "";
-    message.exp = object.exp ?? "";
+    message.exp = object.exp ?? 0;
+    message.payPublicKey = object.payPublicKey ?? "";
+    message.payPrivateKey = object.payPrivateKey ?? "";
     return message;
   },
 };
 
 function createBaseMsgPaySign(): MsgPaySign {
-  return { creator: "", videoId: 0, receivedSizeMB: 0, timestamp: 0 };
+  return { creator: "", videoId: 0, payPublicKey: "" };
 }
 
 export const MsgPaySign = {
@@ -311,11 +334,8 @@ export const MsgPaySign = {
     if (message.videoId !== 0) {
       writer.uint32(16).uint64(message.videoId);
     }
-    if (message.receivedSizeMB !== 0) {
-      writer.uint32(24).uint64(message.receivedSizeMB);
-    }
-    if (message.timestamp !== 0) {
-      writer.uint32(32).uint64(message.timestamp);
+    if (message.payPublicKey !== "") {
+      writer.uint32(26).string(message.payPublicKey);
     }
     return writer;
   },
@@ -334,10 +354,7 @@ export const MsgPaySign = {
           message.videoId = longToNumber(reader.uint64() as Long);
           break;
         case 3:
-          message.receivedSizeMB = longToNumber(reader.uint64() as Long);
-          break;
-        case 4:
-          message.timestamp = longToNumber(reader.uint64() as Long);
+          message.payPublicKey = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -351,8 +368,7 @@ export const MsgPaySign = {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
       videoId: isSet(object.videoId) ? Number(object.videoId) : 0,
-      receivedSizeMB: isSet(object.receivedSizeMB) ? Number(object.receivedSizeMB) : 0,
-      timestamp: isSet(object.timestamp) ? Number(object.timestamp) : 0,
+      payPublicKey: isSet(object.payPublicKey) ? String(object.payPublicKey) : "",
     };
   },
 
@@ -360,8 +376,7 @@ export const MsgPaySign = {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.videoId !== undefined && (obj.videoId = Math.round(message.videoId));
-    message.receivedSizeMB !== undefined && (obj.receivedSizeMB = Math.round(message.receivedSizeMB));
-    message.timestamp !== undefined && (obj.timestamp = Math.round(message.timestamp));
+    message.payPublicKey !== undefined && (obj.payPublicKey = message.payPublicKey);
     return obj;
   },
 
@@ -369,8 +384,7 @@ export const MsgPaySign = {
     const message = createBaseMsgPaySign();
     message.creator = object.creator ?? "";
     message.videoId = object.videoId ?? 0;
-    message.receivedSizeMB = object.receivedSizeMB ?? 0;
-    message.timestamp = object.timestamp ?? 0;
+    message.payPublicKey = object.payPublicKey ?? "";
     return message;
   },
 };
@@ -415,7 +429,7 @@ export const MsgPaySignResponse = {
 };
 
 function createBaseMsgSubmitPaySign(): MsgSubmitPaySign {
-  return { creator: "", paySign: "" };
+  return { creator: "", paySign: "", payData: "" };
 }
 
 export const MsgSubmitPaySign = {
@@ -425,6 +439,9 @@ export const MsgSubmitPaySign = {
     }
     if (message.paySign !== "") {
       writer.uint32(18).string(message.paySign);
+    }
+    if (message.payData !== "") {
+      writer.uint32(26).string(message.payData);
     }
     return writer;
   },
@@ -442,6 +459,9 @@ export const MsgSubmitPaySign = {
         case 2:
           message.paySign = reader.string();
           break;
+        case 3:
+          message.payData = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -454,6 +474,7 @@ export const MsgSubmitPaySign = {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
       paySign: isSet(object.paySign) ? String(object.paySign) : "",
+      payData: isSet(object.payData) ? String(object.payData) : "",
     };
   },
 
@@ -461,6 +482,7 @@ export const MsgSubmitPaySign = {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.paySign !== undefined && (obj.paySign = message.paySign);
+    message.payData !== undefined && (obj.payData = message.payData);
     return obj;
   },
 
@@ -468,6 +490,7 @@ export const MsgSubmitPaySign = {
     const message = createBaseMsgSubmitPaySign();
     message.creator = object.creator ?? "";
     message.paySign = object.paySign ?? "";
+    message.payData = object.payData ?? "";
     return message;
   },
 };

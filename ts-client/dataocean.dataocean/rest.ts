@@ -18,7 +18,11 @@ export type DataoceanMsgPaySignResponse = object;
 
 export interface DataoceanMsgPlayVideoResponse {
   url?: string;
+
+  /** @format uint64 */
   exp?: string;
+  payPublicKey?: string;
+  payPrivateKey?: string;
 }
 
 export type DataoceanMsgSubmitPaySignResponse = object;

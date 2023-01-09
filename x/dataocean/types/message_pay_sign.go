@@ -9,12 +9,11 @@ const TypeMsgPaySign = "pay_sign"
 
 var _ sdk.Msg = &MsgPaySign{}
 
-func NewMsgPaySign(creator string, videoId uint64, receivedSizeMB uint64, timestamp uint64) *MsgPaySign {
+func NewMsgPaySign(creator string, videoId uint64, payPublicKey string) *MsgPaySign {
 	return &MsgPaySign{
-		Creator:        creator,
-		VideoId:        videoId,
-		ReceivedSizeMB: receivedSizeMB,
-		Timestamp:      timestamp,
+		Creator:      creator,
+		VideoId:      videoId,
+		PayPublicKey: payPublicKey,
 	}
 }
 
