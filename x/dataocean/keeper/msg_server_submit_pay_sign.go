@@ -2,10 +2,13 @@ package keeper
 
 import (
 	"context"
-	"encoding/hex"
+	"encoding/base64"
+	"encoding/json"
 	"errors"
+	"fmt"
 
 	"dataocean/x/dataocean/types"
+	"github.com/golang-module/dongle"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -23,6 +26,11 @@ const (
 	contentProducerPercent = 30
 )
 
+type PayData struct {
+	ReceivedSizeMB int `json:"receivedSizeMB"`
+	Timestamp      int `json:"timestamp"`
+}
+
 func (k msgServer) SubmitPaySign(goCtx context.Context, msg *types.MsgSubmitPaySign) (*types.MsgSubmitPaySignResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
@@ -31,7 +39,14 @@ func (k msgServer) SubmitPaySign(goCtx context.Context, msg *types.MsgSubmitPayS
 		return nil, err
 	}
 
-	err = k.exchangePaySign(ctx, msg.Creator, msgPaySign)
+	payData, err := k.parsePayData(msgPaySign.PayPublicKey, msg.PayData)
+	if err != nil {
+		return nil, err
+	}
+
+	return nil, fmt.Errorf("-=-=-=%d", payData.ReceivedSizeMB)
+
+	err = k.exchangePaySign(ctx, msg.Creator, msgPaySign, payData)
 	if err != nil {
 		return nil, err
 	}
@@ -46,8 +61,8 @@ func (k msgServer) parsePaySign(ctx sdk.Context, paySignStr string) (*types.MsgP
 	protoCodec := codec.NewProtoCodec(interfaceRegistry)
 	txConfig := tx.NewTxConfig(protoCodec, tx.DefaultSignModes)
 
-	txBytes, err := hex.DecodeString(paySignStr)
-	// txBytes, err := base64.StdEncoding.DecodeString(paySignStr)
+	// txBytes, err := hex.DecodeString(paySignStr)
+	txBytes, err := base64.StdEncoding.DecodeString(paySignStr)
 	if err != nil {
 		return nil, err
 	}
@@ -81,6 +96,9 @@ func (k msgServer) verifyPaySign(ctx sdk.Context, txConfig client.TxConfig, theT
 	for i, sig := range sigs {
 		sigAddr := sdk.AccAddress(sig.PubKey.Address())
 		sigAccount := k.accountKeeper.GetAccount(ctx, sigAddr)
+		if sigAccount == nil {
+			return fmt.Errorf("account: %s not exists", sigAddr.String())
+		}
 
 		if i >= len(signers) || !sigAddr.Equals(signers[i]) {
 			return errors.New("signature does not match its respective signer")
@@ -101,28 +119,38 @@ func (k msgServer) verifyPaySign(ctx sdk.Context, txConfig client.TxConfig, theT
 	return nil
 }
 
-func (k msgServer) exchangePaySign(ctx sdk.Context, submitAddr string, paySign *types.MsgPaySign) error {
+func (k msgServer) exchangePaySign(ctx sdk.Context, submitAddr string, paySign *types.MsgPaySign, payData *PayData) error {
 	video, found := k.GetVideo(ctx, paySign.VideoId)
 	if !found {
 		return sdkerrors.ErrKeyNotFound
 	}
-	allAmount := int64(video.PriceMB * 0) // TODO
-	// allAmount := int64(video.PriceMB * paySign.ReceivedSizeMB)
+	allAmount := int(video.PriceMB) * payData.ReceivedSizeMB
 	cpAmount := allAmount * contentProducerPercent / 100
 
 	moduleAddr := k.accountKeeper.GetModuleAddress(types.ModuleName)
 
 	_, err := k.authzKeeper.DispatchActions(ctx, moduleAddr, []sdk.Msg{
 		&banktypes.MsgSend{
-			Amount:      sdk.NewCoins(sdk.NewInt64Coin("token", allAmount-cpAmount)),
+			Amount:      sdk.NewCoins(sdk.NewInt64Coin("token", int64(allAmount-cpAmount))),
 			FromAddress: paySign.Creator,
 			ToAddress:   submitAddr,
 		},
 		&banktypes.MsgSend{
-			Amount:      sdk.NewCoins(sdk.NewInt64Coin("token", cpAmount)),
+			Amount:      sdk.NewCoins(sdk.NewInt64Coin("token", int64(cpAmount))),
 			FromAddress: paySign.Creator,
 			ToAddress:   video.Creator,
 		},
 	})
 	return err
+}
+
+func (k msgServer) parsePayData(publicKey string, cipherStr string) (*PayData, error) {
+	payData := &PayData{}
+	payDataStr := dongle.Decrypt.FromHexString(cipherStr).ByRsa(publicKey).ToString()
+	return nil, fmt.Errorf("cipherStr:%s\npublicKey:%s\npayDataStr:%s\n", cipherStr, publicKey, payDataStr)
+	err := json.Unmarshal([]byte(payDataStr), payData)
+	if err != nil {
+		return nil, err
+	}
+	return payData, nil
 }

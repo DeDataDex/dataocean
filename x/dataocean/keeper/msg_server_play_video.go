@@ -108,7 +108,7 @@ func (k msgServer) makeVideoLink(creator string, videoId uint64, exp int64) stri
 }
 
 func (k msgServer) genRsaKey() (string, string, error) {
-	privateKey, err := rsa.GenerateKey(crand.Reader, 1024)
+	privateKey, err := rsa.GenerateKey(crand.Reader, 2048)
 	if err != nil {
 		return "", "", err
 	}
@@ -118,12 +118,17 @@ func (k msgServer) genRsaKey() (string, string, error) {
 		Type:  "RSA PRIVATE KEY",
 		Bytes: x509.MarshalPKCS1PrivateKey(privateKey),
 	}
+	derPkix, err := x509.MarshalPKIXPublicKey(publicKey)
+	if err != nil {
+		return "", "", err
+	}
 	publicBlock := &pem.Block{
 		Type:  "RSA PUBLIC KEY",
-		Bytes: x509.MarshalPKCS1PublicKey(publicKey),
+		Bytes: derPkix,
 	}
 
 	privateKeyStr := string(pem.EncodeToMemory(privateBlock))
 	publicKeyStr := string(pem.EncodeToMemory(publicBlock))
+
 	return privateKeyStr, publicKeyStr, nil
 }
