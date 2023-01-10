@@ -9,10 +9,11 @@ const TypeMsgSubmitPaySign = "submit_pay_sign"
 
 var _ sdk.Msg = &MsgSubmitPaySign{}
 
-func NewMsgSubmitPaySign(creator string, paySign string) *MsgSubmitPaySign {
+func NewMsgSubmitPaySign(creator string, paySign string, payData string) *MsgSubmitPaySign {
 	return &MsgSubmitPaySign{
 		Creator: creator,
 		PaySign: paySign,
+		PayData: payData,
 	}
 }
 

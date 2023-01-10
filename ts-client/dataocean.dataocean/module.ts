@@ -7,13 +7,19 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
+import { MsgSubmitPaySign } from "./types/dataocean/dataocean/tx";
 import { MsgCreateVideo } from "./types/dataocean/dataocean/tx";
 import { MsgPlayVideo } from "./types/dataocean/dataocean/tx";
 import { MsgPaySign } from "./types/dataocean/dataocean/tx";
-import { MsgSubmitPaySign } from "./types/dataocean/dataocean/tx";
 
 
-export { MsgCreateVideo, MsgPlayVideo, MsgPaySign, MsgSubmitPaySign };
+export { MsgSubmitPaySign, MsgCreateVideo, MsgPlayVideo, MsgPaySign };
+
+type sendMsgSubmitPaySignParams = {
+  value: MsgSubmitPaySign,
+  fee?: StdFee,
+  memo?: string
+};
 
 type sendMsgCreateVideoParams = {
   value: MsgCreateVideo,
@@ -33,12 +39,10 @@ type sendMsgPaySignParams = {
   memo?: string
 };
 
-type sendMsgSubmitPaySignParams = {
-  value: MsgSubmitPaySign,
-  fee?: StdFee,
-  memo?: string
-};
 
+type msgSubmitPaySignParams = {
+  value: MsgSubmitPaySign,
+};
 
 type msgCreateVideoParams = {
   value: MsgCreateVideo,
@@ -50,10 +54,6 @@ type msgPlayVideoParams = {
 
 type msgPaySignParams = {
   value: MsgPaySign,
-};
-
-type msgSubmitPaySignParams = {
-  value: MsgSubmitPaySign,
 };
 
 
@@ -73,6 +73,20 @@ interface TxClientOptions {
 export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "http://localhost:26657", prefix: "cosmos" }) => {
 
   return {
+		
+		async sendMsgSubmitPaySign({ value, fee, memo }: sendMsgSubmitPaySignParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgSubmitPaySign: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgSubmitPaySign({ value: MsgSubmitPaySign.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgSubmitPaySign: Could not broadcast Tx: '+ e.message)
+			}
+		},
 		
 		async sendMsgCreateVideo({ value, fee, memo }: sendMsgCreateVideoParams): Promise<DeliverTxResponse> {
 			if (!signer) {
@@ -116,20 +130,14 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendMsgSubmitPaySign({ value, fee, memo }: sendMsgSubmitPaySignParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgSubmitPaySign: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgSubmitPaySign({ value: MsgSubmitPaySign.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+		
+		msgSubmitPaySign({ value }: msgSubmitPaySignParams): EncodeObject {
+			try {
+				return { typeUrl: "/dataocean.dataocean.MsgSubmitPaySign", value: MsgSubmitPaySign.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:sendMsgSubmitPaySign: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:MsgSubmitPaySign: Could not create message: ' + e.message)
 			}
 		},
-		
 		
 		msgCreateVideo({ value }: msgCreateVideoParams): EncodeObject {
 			try {
@@ -152,14 +160,6 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 				return { typeUrl: "/dataocean.dataocean.MsgPaySign", value: MsgPaySign.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:MsgPaySign: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgSubmitPaySign({ value }: msgSubmitPaySignParams): EncodeObject {
-			try {
-				return { typeUrl: "/dataocean.dataocean.MsgSubmitPaySign", value: MsgSubmitPaySign.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgSubmitPaySign: Could not create message: ' + e.message)
 			}
 		},
 		

@@ -2,7 +2,7 @@ package keeper
 
 import (
 	"context"
-	"encoding/base64"
+	"encoding/hex"
 	"errors"
 
 	"dataocean/x/dataocean/types"
@@ -46,7 +46,8 @@ func (k msgServer) parsePaySign(ctx sdk.Context, paySignStr string) (*types.MsgP
 	protoCodec := codec.NewProtoCodec(interfaceRegistry)
 	txConfig := tx.NewTxConfig(protoCodec, tx.DefaultSignModes)
 
-	txBytes, err := base64.StdEncoding.DecodeString(paySignStr)
+	txBytes, err := hex.DecodeString(paySignStr)
+	// txBytes, err := base64.StdEncoding.DecodeString(paySignStr)
 	if err != nil {
 		return nil, err
 	}
