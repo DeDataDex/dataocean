@@ -39,7 +39,7 @@ func (k msgServer) SubmitPaySign(goCtx context.Context, msg *types.MsgSubmitPayS
 		return nil, err
 	}
 
-	payData, err := k.parsePayData(msgPaySign.PayPublicKey, msg.PayData)
+	payData, err := k.parsePayData(msgPaySign.PayPrivateKey, msg.PayData)
 	if err != nil {
 		return nil, err
 	}
@@ -144,10 +144,10 @@ func (k msgServer) exchangePaySign(ctx sdk.Context, submitAddr string, paySign *
 	return err
 }
 
-func (k msgServer) parsePayData(publicKey string, cipherStr string) (*PayData, error) {
+func (k msgServer) parsePayData(privateKey string, cipherStr string) (*PayData, error) {
 	payData := &PayData{}
-	payDataStr := dongle.Decrypt.FromHexString(cipherStr).ByRsa(publicKey).ToString()
-	return nil, fmt.Errorf("cipherStr:%s\npublicKey:%s\npayDataStr:%s\n", cipherStr, publicKey, payDataStr)
+	payDataStr := dongle.Decrypt.FromRawString(cipherStr).ByRsa(privateKey).ToString()
+	return nil, fmt.Errorf("\ncipherStr:%s\npublicKey:%s\npayDataStr:%s\n", cipherStr, privateKey, payDataStr)
 	err := json.Unmarshal([]byte(payDataStr), payData)
 	if err != nil {
 		return nil, err

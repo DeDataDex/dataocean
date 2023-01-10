@@ -32,7 +32,7 @@ export interface MsgPlayVideoResponse {
 export interface MsgPaySign {
   creator: string;
   videoId: number;
-  payPublicKey: string;
+  payPrivateKey: string;
 }
 
 export interface MsgPaySignResponse {
@@ -323,7 +323,7 @@ export const MsgPlayVideoResponse = {
 };
 
 function createBaseMsgPaySign(): MsgPaySign {
-  return { creator: "", videoId: 0, payPublicKey: "" };
+  return { creator: "", videoId: 0, payPrivateKey: "" };
 }
 
 export const MsgPaySign = {
@@ -334,8 +334,8 @@ export const MsgPaySign = {
     if (message.videoId !== 0) {
       writer.uint32(16).uint64(message.videoId);
     }
-    if (message.payPublicKey !== "") {
-      writer.uint32(26).string(message.payPublicKey);
+    if (message.payPrivateKey !== "") {
+      writer.uint32(26).string(message.payPrivateKey);
     }
     return writer;
   },
@@ -354,7 +354,7 @@ export const MsgPaySign = {
           message.videoId = longToNumber(reader.uint64() as Long);
           break;
         case 3:
-          message.payPublicKey = reader.string();
+          message.payPrivateKey = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -368,7 +368,7 @@ export const MsgPaySign = {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
       videoId: isSet(object.videoId) ? Number(object.videoId) : 0,
-      payPublicKey: isSet(object.payPublicKey) ? String(object.payPublicKey) : "",
+      payPrivateKey: isSet(object.payPrivateKey) ? String(object.payPrivateKey) : "",
     };
   },
 
@@ -376,7 +376,7 @@ export const MsgPaySign = {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.videoId !== undefined && (obj.videoId = Math.round(message.videoId));
-    message.payPublicKey !== undefined && (obj.payPublicKey = message.payPublicKey);
+    message.payPrivateKey !== undefined && (obj.payPrivateKey = message.payPrivateKey);
     return obj;
   },
 
@@ -384,7 +384,7 @@ export const MsgPaySign = {
     const message = createBaseMsgPaySign();
     message.creator = object.creator ?? "";
     message.videoId = object.videoId ?? 0;
-    message.payPublicKey = object.payPublicKey ?? "";
+    message.payPrivateKey = object.payPrivateKey ?? "";
     return message;
   },
 };

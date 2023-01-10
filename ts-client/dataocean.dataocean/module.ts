@@ -7,22 +7,22 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
-import { MsgSubmitPaySign } from "./types/dataocean/dataocean/tx";
 import { MsgCreateVideo } from "./types/dataocean/dataocean/tx";
+import { MsgSubmitPaySign } from "./types/dataocean/dataocean/tx";
 import { MsgPlayVideo } from "./types/dataocean/dataocean/tx";
 import { MsgPaySign } from "./types/dataocean/dataocean/tx";
 
 
-export { MsgSubmitPaySign, MsgCreateVideo, MsgPlayVideo, MsgPaySign };
+export { MsgCreateVideo, MsgSubmitPaySign, MsgPlayVideo, MsgPaySign };
 
-type sendMsgSubmitPaySignParams = {
-  value: MsgSubmitPaySign,
+type sendMsgCreateVideoParams = {
+  value: MsgCreateVideo,
   fee?: StdFee,
   memo?: string
 };
 
-type sendMsgCreateVideoParams = {
-  value: MsgCreateVideo,
+type sendMsgSubmitPaySignParams = {
+  value: MsgSubmitPaySign,
   fee?: StdFee,
   memo?: string
 };
@@ -40,12 +40,12 @@ type sendMsgPaySignParams = {
 };
 
 
-type msgSubmitPaySignParams = {
-  value: MsgSubmitPaySign,
-};
-
 type msgCreateVideoParams = {
   value: MsgCreateVideo,
+};
+
+type msgSubmitPaySignParams = {
+  value: MsgSubmitPaySign,
 };
 
 type msgPlayVideoParams = {
@@ -74,20 +74,6 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 
   return {
 		
-		async sendMsgSubmitPaySign({ value, fee, memo }: sendMsgSubmitPaySignParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgSubmitPaySign: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgSubmitPaySign({ value: MsgSubmitPaySign.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgSubmitPaySign: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
 		async sendMsgCreateVideo({ value, fee, memo }: sendMsgCreateVideoParams): Promise<DeliverTxResponse> {
 			if (!signer) {
 					throw new Error('TxClient:sendMsgCreateVideo: Unable to sign Tx. Signer is not present.')
@@ -99,6 +85,20 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
 				throw new Error('TxClient:sendMsgCreateVideo: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgSubmitPaySign({ value, fee, memo }: sendMsgSubmitPaySignParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgSubmitPaySign: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgSubmitPaySign({ value: MsgSubmitPaySign.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgSubmitPaySign: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -131,19 +131,19 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 		},
 		
 		
-		msgSubmitPaySign({ value }: msgSubmitPaySignParams): EncodeObject {
-			try {
-				return { typeUrl: "/dataocean.dataocean.MsgSubmitPaySign", value: MsgSubmitPaySign.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgSubmitPaySign: Could not create message: ' + e.message)
-			}
-		},
-		
 		msgCreateVideo({ value }: msgCreateVideoParams): EncodeObject {
 			try {
 				return { typeUrl: "/dataocean.dataocean.MsgCreateVideo", value: MsgCreateVideo.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:MsgCreateVideo: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgSubmitPaySign({ value }: msgSubmitPaySignParams): EncodeObject {
+			try {
+				return { typeUrl: "/dataocean.dataocean.MsgSubmitPaySign", value: MsgSubmitPaySign.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgSubmitPaySign: Could not create message: ' + e.message)
 			}
 		},
 		

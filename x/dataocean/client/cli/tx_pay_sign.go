@@ -15,7 +15,7 @@ var _ = strconv.Itoa(0)
 
 func CmdPaySign() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "pay-sign [video-id] [pay-public-key]",
+		Use:   "pay-sign [video-id] [pay-private-key]",
 		Short: "Broadcast message pay-sign",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -23,7 +23,7 @@ func CmdPaySign() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			argPayPublicKey := args[1]
+			argPayPrivateKey := args[1]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -33,7 +33,7 @@ func CmdPaySign() *cobra.Command {
 			msg := types.NewMsgPaySign(
 				clientCtx.GetFromAddress().String(),
 				argVideoId,
-				argPayPublicKey,
+				argPayPrivateKey,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

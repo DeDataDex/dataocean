@@ -42,7 +42,7 @@ message MsgPlayVideoResponse {
 message MsgPaySign {
   string creator = 1;
   uint64 videoId = 2;
-  string payPublicKey = 3;
+  string payPrivateKey = 3;
 }
 
 message MsgPaySignResponse {
