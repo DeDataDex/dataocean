@@ -2,7 +2,7 @@ package keeper
 
 import (
 	"context"
-	"encoding/base64"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -44,8 +44,6 @@ func (k msgServer) SubmitPaySign(goCtx context.Context, msg *types.MsgSubmitPayS
 		return nil, err
 	}
 
-	return nil, fmt.Errorf("-=-=-=%d", payData.ReceivedSizeMB)
-
 	err = k.exchangePaySign(ctx, msg.Creator, msgPaySign, payData)
 	if err != nil {
 		return nil, err
@@ -61,8 +59,8 @@ func (k msgServer) parsePaySign(ctx sdk.Context, paySignStr string) (*types.MsgP
 	protoCodec := codec.NewProtoCodec(interfaceRegistry)
 	txConfig := tx.NewTxConfig(protoCodec, tx.DefaultSignModes)
 
-	// txBytes, err := hex.DecodeString(paySignStr)
-	txBytes, err := base64.StdEncoding.DecodeString(paySignStr)
+	txBytes, err := hex.DecodeString(paySignStr)
+	// txBytes, err := base64.StdEncoding.DecodeString(paySignStr)
 	if err != nil {
 		return nil, err
 	}
@@ -146,8 +144,7 @@ func (k msgServer) exchangePaySign(ctx sdk.Context, submitAddr string, paySign *
 
 func (k msgServer) parsePayData(privateKey string, cipherStr string) (*PayData, error) {
 	payData := &PayData{}
-	payDataStr := dongle.Decrypt.FromRawString(cipherStr).ByRsa(privateKey).ToString()
-	return nil, fmt.Errorf("\ncipherStr:%s\npublicKey:%s\npayDataStr:%s\n", cipherStr, privateKey, payDataStr)
+	payDataStr := dongle.Decrypt.FromBase64String(cipherStr).ByRsa(privateKey).ToString()
 	err := json.Unmarshal([]byte(payDataStr), payData)
 	if err != nil {
 		return nil, err
