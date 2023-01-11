@@ -1,25 +1,25 @@
 version: 1
 accounts:
   - name: alice
-    coins: ["20000token", "200000000stake"]
+    coins: ["200000000token", "200000000stake"]
   - name: bob
-    coins: ["10000token", "100000000stake"]
+    coins: ["100000000token", "100000000stake"]
   - name: user1
-    coins: ["10000token", "100000000stake" ]
+    coins: ["100000000token", "100000000stake" ]
   - name: user2
-    coins: ["10000token", "100000000stake"]
+    coins: ["100000000token", "100000000stake"]
   - name: cp1
-    coins: ["10000token", "100000000stake"]
+    coins: ["100000000token", "100000000stake"]
   - name: cp2
-    coins: ["10000token", "100000000stake"]
+    coins: ["100000000token", "100000000stake"]
   - name: ct1
-    coins: ["10000token", "100000000stake"]
+    coins: ["100000000token", "100000000stake"]
   - name: ct2
-    coins: ["10000token", "100000000stake"]
+    coins: ["100000000token", "100000000stake"]
 
 validators:
   - name: alice
-    bonded: "100000000stake"
+    bonded: "100000000token"
 client:
   openapi:
     path: "docs/static/openapi.yml"
@@ -29,4 +29,4 @@ client:
     path: "vue/src/store"
 faucet:
   name: bob
-  coins: ["5token", "100000stake"]
+  coins: ["10000000000token", "100000stake"]
