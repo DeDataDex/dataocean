@@ -256,19 +256,6 @@ export default {
 		},
 		
 		
-		async sendMsgPlayVideo({ rootGetters }, { value, fee = [], memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const result = await client.DataoceanDataocean.tx.sendMsgPlayVideo({ value, fee: {amount: fee, gas: "200000"}, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgPlayVideo:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgPlayVideo:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
 		async sendMsgSubmitPaySign({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
@@ -279,19 +266,6 @@ export default {
 					throw new Error('TxClient:MsgSubmitPaySign:Init Could not initialize signing client. Wallet is required.')
 				}else{
 					throw new Error('TxClient:MsgSubmitPaySign:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgCreateVideo({ rootGetters }, { value, fee = [], memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const result = await client.DataoceanDataocean.tx.sendMsgCreateVideo({ value, fee: {amount: fee, gas: "200000"}, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgCreateVideo:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgCreateVideo:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -308,20 +282,33 @@ export default {
 				}
 			}
 		},
-		
-		async MsgPlayVideo({ rootGetters }, { value }) {
+		async sendMsgCreateVideo({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
-				const client=initClient(rootGetters)
-				const msg = await client.DataoceanDataocean.tx.msgPlayVideo({value})
-				return msg
+				const client=await initClient(rootGetters)
+				const result = await client.DataoceanDataocean.tx.sendMsgCreateVideo({ value, fee: {amount: fee, gas: "200000"}, memo })
+				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgPlayVideo:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgPlayVideo:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:MsgCreateVideo:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgCreateVideo:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
+		async sendMsgPlayVideo({ rootGetters }, { value, fee = [], memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const result = await client.DataoceanDataocean.tx.sendMsgPlayVideo({ value, fee: {amount: fee, gas: "200000"}, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgPlayVideo:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgPlayVideo:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		
 		async MsgSubmitPaySign({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
@@ -332,6 +319,19 @@ export default {
 					throw new Error('TxClient:MsgSubmitPaySign:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:MsgSubmitPaySign:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgPaySign({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.DataoceanDataocean.tx.msgPaySign({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgPaySign:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgPaySign:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -348,16 +348,16 @@ export default {
 				}
 			}
 		},
-		async MsgPaySign({ rootGetters }, { value }) {
+		async MsgPlayVideo({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.DataoceanDataocean.tx.msgPaySign({value})
+				const msg = await client.DataoceanDataocean.tx.msgPlayVideo({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgPaySign:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgPlayVideo:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:MsgPaySign:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:MsgPlayVideo:Create Could not create message: ' + e.message)
 				}
 			}
 		},

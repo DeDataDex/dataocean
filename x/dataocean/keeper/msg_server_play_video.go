@@ -30,12 +30,8 @@ var servers = []struct {
 	aesKey string
 }{
 	{
-		host:   "127.0.0.1",
+		host:   "18.141.197.172:9001",
 		aesKey: "key_for_server_1",
-	},
-	{
-		host:   "127.0.0.2",
-		aesKey: "key_for_server_2",
 	},
 }
 
