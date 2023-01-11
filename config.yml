@@ -1,7 +1,7 @@
 version: 1
 accounts:
   - name: alice
-    coins: ["2000000000000token", "200000000stake"]
+    coins: ["10000000000000token", "200000000stake"]
   - name: bob
     coins: ["1000000000000token", "100000000stake"]
   - name: user1
@@ -19,7 +19,7 @@ accounts:
 
 validators:
   - name: alice
-    bonded: "10000000000000token"
+    bonded: "100000000stake"
 client:
   openapi:
     path: "docs/static/openapi.yml"
@@ -29,4 +29,4 @@ client:
     path: "vue/src/store"
 faucet:
   name: bob
-  coins: ["500000000000token", "100000stake"]
+  coins: ["500000000token", "100000stake"]
