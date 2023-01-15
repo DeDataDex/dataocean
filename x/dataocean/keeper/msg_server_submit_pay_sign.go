@@ -8,6 +8,7 @@ import (
 	"fmt"
 
 	"dataocean/x/dataocean/types"
+
 	"github.com/golang-module/dongle"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -27,8 +28,8 @@ const (
 )
 
 type PayData struct {
-	ReceivedSizeMB int `json:"receivedSizeMB"`
-	Timestamp      int `json:"timestamp"`
+	ReceivedSizeMB float64 `json:"receivedSizeMB"`
+	Timestamp      int     `json:"timestamp"`
 }
 
 func (k msgServer) SubmitPaySign(goCtx context.Context, msg *types.MsgSubmitPaySign) (*types.MsgSubmitPaySignResponse, error) {
@@ -122,8 +123,8 @@ func (k msgServer) exchangePaySign(ctx sdk.Context, submitAddr string, paySign *
 	if !found {
 		return sdkerrors.ErrKeyNotFound
 	}
-	allAmount := int(video.PriceMB) * payData.ReceivedSizeMB
-	cpAmount := allAmount * contentProducerPercent / 100
+	allAmount := int(float64(video.PriceMB) * payData.ReceivedSizeMB)
+	cpAmount := int(allAmount * contentProducerPercent / 100)
 
 	moduleAddr := k.accountKeeper.GetModuleAddress(types.ModuleName)
 
