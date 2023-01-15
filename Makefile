@@ -11,16 +11,29 @@ install-protoc-gen-ts:
 	cd scripts/protoc && unzip -o protoc.zip
 	rm scripts/protoc/protoc.zip
 
-cosmos-version = v0.45.4
+cosmos-version-old = v0.45.4
+cosmos-version = v0.46.6
 
 download-cosmos-proto:
 	mkdir -p proto/cosmos/base/query/v1beta1
 	curl https://raw.githubusercontent.com/cosmos/cosmos-sdk/${cosmos-version}/proto/cosmos/base/query/v1beta1/pagination.proto -o proto/cosmos/base/query/v1beta1/pagination.proto
+	mkdir -p proto/cosmos/authz/v1beta1
+	curl https://raw.githubusercontent.com/cosmos/cosmos-sdk/${cosmos-version}/proto/cosmos/authz/v1beta1/authz.proto -o proto/cosmos/authz/v1beta1/authz.proto
+	curl https://raw.githubusercontent.com/cosmos/cosmos-sdk/${cosmos-version}/proto/cosmos/authz/v1beta1/query.proto -o proto/cosmos/authz/v1beta1/query.proto
+	curl https://raw.githubusercontent.com/cosmos/cosmos-sdk/${cosmos-version}/proto/cosmos/authz/v1beta1/tx.proto -o proto/cosmos/authz/v1beta1/tx.proto
+	mkdir -p proto/cosmos/msg/v1
+	curl https://raw.githubusercontent.com/cosmos/cosmos-sdk/v0.46.0/proto/cosmos/msg/v1/msg.proto -o proto/cosmos/msg/v1/msg.proto
+	mkdir -p proto/cosmos_proto
+	curl https://raw.githubusercontent.com/cosmos/cosmos-proto/v1.0.0-beta.1/proto/cosmos_proto/cosmos.proto -o proto/cosmos_proto/cosmos.proto
 	mkdir -p proto/google/api
-	curl https://raw.githubusercontent.com/cosmos/cosmos-sdk/${cosmos-version}/third_party/proto/google/api/annotations.proto -o proto/google/api/annotations.proto
-	curl https://raw.githubusercontent.com/cosmos/cosmos-sdk/${cosmos-version}/third_party/proto/google/api/http.proto -o proto/google/api/http.proto
+	curl https://raw.githubusercontent.com/cosmos/cosmos-sdk/${cosmos-version-old}/third_party/proto/google/api/annotations.proto -o proto/google/api/annotations.proto
+	curl https://raw.githubusercontent.com/cosmos/cosmos-sdk/${cosmos-version-old}/third_party/proto/google/api/http.proto -o proto/google/api/http.proto
+	mkdir -p proto/google/protobuf
+	curl  https://raw.githubusercontent.com/protocolbuffers/protobuf/main/src/google/protobuf/descriptor.proto -o proto/google/protobuf/descriptor.proto
 	mkdir -p proto/gogoproto
-	curl https://raw.githubusercontent.com/cosmos/cosmos-sdk/${cosmos-version}/third_party/proto/gogoproto/gogo.proto -o proto/gogoproto/gogo.proto
+	curl https://raw.githubusercontent.com/cosmos/cosmos-sdk/${cosmos-version-old}/third_party/proto/gogoproto/gogo.proto -o proto/gogoproto/gogo.proto
+
+	
 
 gen-protoc-ts: 
 	mkdir -p ./client/src/types/generated/
