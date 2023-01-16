@@ -28,8 +28,8 @@ const (
 )
 
 type PayData struct {
-	ReceivedSizeMB float64 `json:"receivedSizeMB"`
-	Timestamp      int     `json:"timestamp"`
+	ReceivedSize int `json:"receivedSize"`
+	Timestamp    int `json:"timestamp"`
 }
 
 func (k msgServer) SubmitPaySign(goCtx context.Context, msg *types.MsgSubmitPaySign) (*types.MsgSubmitPaySignResponse, error) {
@@ -123,8 +123,8 @@ func (k msgServer) exchangePaySign(ctx sdk.Context, submitAddr string, paySign *
 	if !found {
 		return sdkerrors.ErrKeyNotFound
 	}
-	allAmount := int(float64(video.PriceMB) * payData.ReceivedSizeMB)
-	cpAmount := int(allAmount * contentProducerPercent / 100)
+	allAmount := int64(float64(video.PriceMB) * float64(payData.ReceivedSize/1024/1024))
+	cpAmount := int64(allAmount * contentProducerPercent / 100)
 
 	moduleAddr := k.accountKeeper.GetModuleAddress(types.ModuleName)
 
